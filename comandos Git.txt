@@ -8,6 +8,8 @@ git push --set-upstream origin master
 #Se não sincronizar - Assim pega tudo o que esta no Hithub e sync com o q esta local.
 git pull https://github.com/vitorioluis/OParoquiano.git --allow-unrelated-histories
 
+# deletar cached
+git rm --cached -rf diretorio
 
 # Modificou algo
 git add .
