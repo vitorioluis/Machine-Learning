@@ -1,4 +1,4 @@
-echo "# ProjetoBase" >> README.md
+echo "# Descrição do Projeto" >> README.md
 git init
 git remote add origin https://github.com/vitorioluis/OParoquiano.git -> Caminho do gitHub/BitBucket
 git add .
