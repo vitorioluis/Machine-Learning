@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block contend %}
+<section class="content">
+    <div class="row">
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-6">
+                        <h3 class="panel-title"></h3>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="table_padrao" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Comprimento da Sépala</th>
+                        <th>Largura da Sépala</th>
+                        <th>Comprimento da Petula</th>
+                        <th>Largura da Petula em cm</th>
+                        <th>Espécie</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for x in objects %}
+                        <tr>
+                            <td class="hidden-xs">{{ x.id }}</td>
+                            <td>{{ x.SepalLengthCm }}</td>
+                            <td>{{ x.SepalWidthCm }}</td>
+                            <td>{{ x.PetalWidthCm }}</td>
+                            <td>{{ x.PetalLengthCm }}</td>
+                            <td>{{ x.Species }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

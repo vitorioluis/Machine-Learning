@@ -1,0 +1,15 @@
+certifi>=2018.4.16
+chardet>=3.0.4
+Django>=2.0.4
+django-bootstrap3>=9.1.0
+html5lib>=1.0.1
+idna>=2.6
+image>=1.5.20
+olefile>=0.45.1
+Pillow>=5.1.0
+pytz>=2018.4
+requests>=2.18.4
+six>=1.11.0
+static3>=0.7.0
+urllib3>=1.22
+webencodings>=0.5.1

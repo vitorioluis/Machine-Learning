@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div class="box-body">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        <hr/>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url cancela %}" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+{% endblock %}
