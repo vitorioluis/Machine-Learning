@@ -6,39 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!--<link rel="icon" href="../../../../favicon.ico">-->
+    <!-- <link rel="icon" href="../../../../favicon.ico">-->
 
     <title>Projeto Base</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'dist/css/bootstrap.min.css'%}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
-
+    <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{% static 'dashboard.css'%}" rel="stylesheet">
+    <link href="{% static 'navbar-top-fixed.css' %}" rel="stylesheet">
+
+    <!-- datatable  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
 </head>
 
 <body>
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'core:home' %}">Machine Learning</a>
 
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="{% url 'ml:listar_iris' %}">Machine Learning</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'ml:listar_iris' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <!--<li class="nav-item active">-->
+                <!--<a class="nav-link" href="{% url 'ml:listar_iris' %}">Iris</a>-->
+            <!--</li>-->
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'ml:linear' %}">Regressão Linear</a>
+            </li>
+
+        </ul>
+
+    </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
+<main role="main" class="container">
+    <div class="content">
+        {% block content %}
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
-            <section class="content container-fluid">
-                {% block content %}
-
-                {% endblock %}
-            </section>
-
-        </main>
+        {% endblock %}
     </div>
-</div>
+</main>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -46,65 +59,15 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="{% static 'assets/js/vendor/jquery-slim.min.js'%}"><\/script>')
+<script>window.jQuery || document.write('<script src="{% static 'assets/js/vendor/jquery-slim.min.js' %}"><\/script>')
 </script>
-
-
 <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
 <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
-
-<!-- Icons -->
-<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-<script>
-      feather.replace()
-
-
-</script>
-
-<!-- Graphs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-<script>
-      var ctx = document.getElementById("myChart");
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-          datasets: [{
-            data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-            lineTension: 0,
-            backgroundColor: 'transparent',
-            borderColor: '#007bff',
-            borderWidth: 4,
-            pointBackgroundColor: '#007bff'
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: false
-              }
-            }]
-          },
-          legend: {
-            display: false,
-          }
-        }
-      });
-	  
-
-
-
-
-
-</script>
 
 <!--table-->
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
 <script>
 $(document).ready(function() {
-
-
       $('#table_padrao').DataTable({
           "lengthMenu": [[25, 50, -1], [25, 50, "Todos"]],
           "language": {
@@ -129,14 +92,11 @@ $(document).ready(function() {
                           "sSortAscending": ": Ordenar colunas de forma ascendente",
                           "sSortDescending": ": Ordenar colunas de forma descendente"
                        }
-
         }
     })
 
 })
-
-
-
 </script>
-</body>
+	
+  </body>
 </html>

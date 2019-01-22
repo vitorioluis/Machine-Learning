@@ -7,8 +7,10 @@ from .views import ListaIris,LinearIris
 urlpatterns = [
     # listar
 
-    url(r'^listar/$', ListaIris.as_view(), name='listar_iris'),
+    url(r'^$', ListaIris.as_view(), name='listar_iris'),
     url(r'^linear/$', LinearIris.as_view(), name='linear'),
+
+
     #
     # # editar
     # url(r'^edit/(?P<pk>\d+)/$', views.EditClientes.as_view(), name='editar_clientes'),
