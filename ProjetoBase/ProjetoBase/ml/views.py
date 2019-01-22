@@ -1,4 +1,5 @@
 # -*- encoding:utf-8
+from django.urls import reverse_lazy
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from .models import Iris
@@ -6,7 +7,7 @@ from .models import Iris
 from django.views import View
 from django.views.generic import UpdateView, CreateView
 from django.shortcuts import render
-# from .forms import IrisForm
+from .forms import IrisForm
 
 
 # def mod_linear_multivariado(*args):
@@ -31,13 +32,12 @@ class ListaIris(View):
         return render(request, self.template_name, {'objects': iris})
 
 
-# class CreateIris(CreateView):
-#     template_name = 'new_edit.html'
-#     models = Iris
-#     form_class = IrisForm
-#     success_url = reverse_lazy('ml:listar_iris')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(CreateClientes, self).get_context_data(**kwargs)
-#
-#         return context
+class LinearIris(CreateView):
+    template_name = 'new_edit.html'
+    models = Iris
+    form_class = IrisForm
+    success_url = reverse_lazy('ml:linear')
+
+    def get_context_data(self, **kwargs):
+        context = super(LinearIris, self).get_context_data(**kwargs)
+        return context

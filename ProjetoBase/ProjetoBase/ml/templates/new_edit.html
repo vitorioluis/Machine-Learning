@@ -1,4 +1,5 @@
 {% extends "base.html"%}
+{% load bootstrap3 %}
 
 {% block content %}
 
@@ -6,13 +7,13 @@
     <div class="box-body">
         {% csrf_token %}
 
-        {% bootstrap_form form %}
+                {% bootstrap_form form %}
 
         <hr/>
         <div class="row">
             <div class="col-6">
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <a href="{% url cancela %}" class="btn btn-default">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Regressão Linear</button>
+                <a href="{% url 'core:home' %}" class="btn btn-default">Cancelar</a>
             </div>
         </div>
 
