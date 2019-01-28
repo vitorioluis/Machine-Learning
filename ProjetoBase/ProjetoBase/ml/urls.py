@@ -2,14 +2,13 @@
 
 from django.conf.urls import url
 
-from .views import ListaIris,LinearIris
+from .views import ListaIris, LogisticIris
 
 urlpatterns = [
     # listar
 
     url(r'^$', ListaIris.as_view(), name='listar_iris'),
-    url(r'^linear/$', LinearIris.as_view(), name='linear'),
-
+    url(r'^logistica/$', LogisticIris.as_view(), name='logistica'),
 
     #
     # # editar
