@@ -12,6 +12,9 @@ from .models import Iris
 
 
 def mod_regressao_logistica(lst):
+    nova_predicao = pd.DataFrame(lst,
+                                 columns=['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
+
     data = Iris.objects.all()
     df = pd.DataFrame.from_records(
         data.values('SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species')
@@ -22,7 +25,7 @@ def mod_regressao_logistica(lst):
     x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=100, random_state=101)
     lm = LogisticRegression()
     lm.fit(x_train, y_train)
-    predicao = lm.predict(x_teste)
+    predicao = lm.predict(data)
     return predicao
 
 
@@ -39,7 +42,7 @@ class LogisticIris(CreateView):
     def post(self, request, *args, **kwargs):
         form = IrisForm(request.POST or None)
         if form.is_valid():
-            lst = [n for n in form.cleaned_data.values()]
+            lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
             mod_regressao_logistica(lst)
             print(lst)
 
