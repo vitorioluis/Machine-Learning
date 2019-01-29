@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('ml', '0003_auto_20190121_1159'),
     ]
@@ -13,22 +12,26 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='iris',
             name='PetalLengthCm',
-            field=models.DecimalField(decimal_places=2, default=None, max_digits=10, verbose_name='Compr. da Petula em cm'),
+            field=models.DecimalField(decimal_places=2, default=None, max_digits=10,
+                                      verbose_name='Compr. da Petula em cm'),
         ),
         migrations.AlterField(
             model_name='iris',
             name='PetalWidthCm',
-            field=models.DecimalField(decimal_places=2, default=None, max_digits=10, verbose_name='Largura da Petula em cm'),
+            field=models.DecimalField(decimal_places=2, default=None, max_digits=10,
+                                      verbose_name='Largura da Petula em cm'),
         ),
         migrations.AlterField(
             model_name='iris',
             name='SepalLengthCm',
-            field=models.DecimalField(decimal_places=2, default=None, max_digits=10, verbose_name='Compr. da Sépala em cm'),
+            field=models.DecimalField(decimal_places=2, default=None, max_digits=10,
+                                      verbose_name='Compr. da Sépala em cm'),
         ),
         migrations.AlterField(
             model_name='iris',
             name='SepalWidthCm',
-            field=models.DecimalField(decimal_places=2, default=None, max_digits=10, verbose_name='Largura da Sépala em cm'),
+            field=models.DecimalField(decimal_places=2, default=None, max_digits=10,
+                                      verbose_name='Largura da Sépala em cm'),
         ),
         migrations.AlterField(
             model_name='iris',

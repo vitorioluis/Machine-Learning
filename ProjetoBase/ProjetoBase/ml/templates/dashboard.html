@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="table_padrao" class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="table_padrao">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -28,14 +28,14 @@
                     <tbody>
 
                     {% for x in objects %}
-                        <tr>
-                            <td class="hidden-xs">{{ x.id }}</td>
-                            <td>{{ x.SepalLengthCm }}</td>
-                            <td>{{ x.SepalWidthCm }}</td>
-                            <td>{{ x.PetalWidthCm }}</td>
-                            <td>{{ x.PetalLengthCm }}</td>
-                            <td>{{ x.Species }}</td>
-                        </tr>
+                    <tr>
+                        <td class="hidden-xs">{{ x.id }}</td>
+                        <td>{{ x.SepalLengthCm }}</td>
+                        <td>{{ x.SepalWidthCm }}</td>
+                        <td>{{ x.PetalWidthCm }}</td>
+                        <td>{{ x.PetalLengthCm }}</td>
+                        <td>{{ x.Species }}</td>
+                    </tr>
                     {% endfor %}
 
                     </tbody>

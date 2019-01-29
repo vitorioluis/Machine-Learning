@@ -12,10 +12,8 @@
     // Best Practices
     "no-magic-numbers": "off",
     "vars-on-top": "off",
-
     // Stylistic Issues
     "spaced-comment": "off",
-
     // ECMAScript 6
     "no-var": "off",
     "object-shorthand": "off",
