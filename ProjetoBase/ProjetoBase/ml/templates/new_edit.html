@@ -27,12 +27,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="gridSystemModalLabel"> Predição </h4>
+                <h4 class="modal-title" id="gridSystemModalLabel"> Resultado </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>{{ predict }}</p>
+                <p>Probabilidade de acerto = {{ prob }}%</p>
+                <p>Predição = {{ predict }}</p>
             </div>
 
             <div class="modal-footer">

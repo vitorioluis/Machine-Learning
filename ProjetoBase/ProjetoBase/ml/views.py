@@ -40,8 +40,8 @@ def mod_regressao_logistica(lst):
 
     # predicao
     predicao = lm.predict(lst_predict)
-    # print(lm.predict_proba(lst_predict))
-    return predicao[0]
+    prob = lm.predict_proba(lst_predict).round(2).max() * 100
+    return [predicao[0],prob]
 
 
 class LogisticIris(CreateView):
@@ -62,7 +62,7 @@ class LogisticIris(CreateView):
         form = IrisForm(request.POST or None)
         if form.is_valid():
             lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
-            context['predict'] = mod_regressao_logistica(lst)
+            context['predict'],context['prob'] = mod_regressao_logistica(lst)
 
         return render(request, self.template_name, context)
 
