@@ -6,7 +6,7 @@
 
 
 
-## Projeto Base
+## LabsML
 #### Neste projeto vamos executar alguns modelos de Machine Learning direto do navegador. Este projeto será construindo em Django/Python.
 ##### Lista de modelos:
 ##### * Regressão Logisca - Implementado
