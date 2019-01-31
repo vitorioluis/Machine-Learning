@@ -5,38 +5,12 @@ import pygame
 from pygame.locals import *
 
 
-# # Object dimensions
-# BRICK_WIDTH = 60
-# BRICK_HEIGHT = 15
-#
-#
-#
-# # pa
-# pa_largura = 60
-# pa_altura = 12
-# pa_y = tamanho_tela[1] - pa_altura - 10
-#
-# MAX_PADDLE_X = tamanho_tela[0] - pa_largura
-# MAX_BALL_X = tamanho_tela[0] - bola_diametro
-# MAX_BALL_Y = tamanho_tela[1] - bola_diametro
-#
-# # Color constants
-# preto = (0, 0, 0)
-# branco = (255, 255, 255)
-# vermelho = (255, 0, 0)
-# BRICK_COLOR = (200, 200, 0)
-#
-# # State constants
-# STATE_BALL_IN_PADDLE = 0
-# STATE_PLAYING = 1
-# STATE_WON = 2
-# STATE_GAME_OVER = 3
-
-
 class ArkNoid_ai:
     def __init__(self):
         pygame.init()
-        self.__tamanho_tela = 640, 480
+        self.__bola = pygame.image.load('img/bola.png')
+
+        self.__tamanho_tela = 800, 600
         self.__screen = pygame.display.set_mode(self.__tamanho_tela)
 
         if pygame.font:
@@ -53,8 +27,8 @@ class ArkNoid_ai:
         self.__branco = (255, 255, 255)
         self.__vermelho = (255, 0, 0)
 
-        self.__pa_largura, self.__pa_altura = 60, 12
-        self.__pa_y = self.__tamanho_tela[1] - self.__pa_altura - 10
+        self.__pa_largura, self.__pa_altura = 65, 12
+        self.__pa_y = self.__tamanho_tela[1] - self.__pa_altura -10
         self.__max_pa_x = self.__tamanho_tela[0] - self.__pa_largura
 
         self.__raio_bola, self.__bola_diametro = 16, 16
@@ -65,11 +39,12 @@ class ArkNoid_ai:
         self.__xpos = 310
         self.__ypos = self.__pa_y - 16
 
-        self.__menos, self.__mais = 1, 1
+        self.__menos, self.__mais = 5, 5
 
     def __iniciar_jogo(self):
+        self.__clock = pygame.time.Clock()
         self.__status = self.__status_bola_pa
-        self.__lst_pos_bola = [1, -1]
+        self.__lst_pos_bola = [5, -5]
         self.__pa = pygame.Rect(283, self.__pa_y, self.__pa_largura, self.__pa_altura)
         self.__bola = pygame.Rect(300, self.__pa_y - self.__bola_diametro, self.__bola_diametro, self.__bola_diametro)
 
@@ -79,7 +54,7 @@ class ArkNoid_ai:
 
         if self.__bola.left <= 0:
             self.__bola.left = 0
-            self.ball_vel[0] = -__lst_pos_bola[0]
+            self.__lst_pos_bola[0] = -self.__lst_pos_bola[0]
         elif self.__bola.left >= self.__max_bola_x:
             self.__bola.left = self.__max_bola_x
             self.__lst_pos_bola[0] = -self.__lst_pos_bola[0]
@@ -110,22 +85,32 @@ class ArkNoid_ai:
                     pygame.quit()
                     sys.exit()
 
+
+            self.__clock.tick(50)
+            self.__screen.fill(self.__branco)
+
             self.__tecla = pygame.key.get_pressed()
 
             if self.__tecla[K_ESCAPE]:
                 break
-            if self.__status == self.__status_bola_pa:
+
+            if self.__tecla[K_RETURN] or self.__status == 1:
                 self.__movimentar_bola()
+                self.__movimentar_pa()
+                self.__status=self.state_playing
 
-            self.__movimentar_pa()
 
-            self.__screen.fill(self.__preto)
 
-            self.__pa = pygame.draw.rect(self.__screen, self.__branco, self.__pa)
-            self.__bola = pygame.draw.circle(self.__screen, self.__vermelho, (self.__xpos, self.__ypos),
-                                             self.__raio_bola)
+            self.__screen.fill(self.__branco)
 
-            pygame.display.flip()
+            self.__pa = pygame.draw.rect(self.__screen, self.__preto, self.__pa)
+            self.__bola=pygame.draw.circle(self.__screen, self.__preto, (self.__bola.left + int(self.__raio_bola),
+                                                            self.__bola.top + int(self.__raio_bola)),
+                                                            int(self.__raio_bola))
+
+
+
+            pygame.display.update()
 
 
 if __name__ == "__main__":
