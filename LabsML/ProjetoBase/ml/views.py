@@ -16,6 +16,11 @@ from .forms import IrisForm
 from .models import Iris
 
 
+def cotacao_dolar():
+    url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia"
+    url += "(dataCotacao=@dataCotacao)?@dataCotacao='{0}'&$top=100&$format=json".format('02-15-2019')
+
+
 def mod_regressao_logistica(lst):
     """
     Machine Learning na pratica
