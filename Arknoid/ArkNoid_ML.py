@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 import sys
 
 import pygame
@@ -37,6 +38,7 @@ class ArkNoid_ML:
         Função com variáveis constantes utilizadas na classe
 
         """
+        self.__white = (255, 255, 255)
         self.__status_stop, self.status_play, self.status_pausa = 0, 1, 2
 
         # configurações da base
@@ -56,6 +58,7 @@ class ArkNoid_ML:
         # posição inicial da nave
         self.__xpos = 310
         self.__ypos = self.__resolucao_tela[1]
+        self.__ml, self.__pontos_jogo = 0, 0
 
     def __iniciar_jogo(self):
         # time de velociade do jogo
@@ -64,12 +67,18 @@ class ArkNoid_ML:
         # incia o jogo com status stop para abrir a tela e não movimentar os objetos
         self.__status = self.__status_stop
 
+        # exibe potuação na tela
+        self.__mostrar_pontuacao()
+
         # número de pixel que a imagem se moverá
         self.__lst_vel_nave = [5, -5]
 
+        # sorteio da posição dos objetos da tela
+        sorteio = lambda x, y: random.randint(x, y)
+
         # inicia objetos na tela
-        self.__base = pygame.Rect(350, self.__base_max_x, self.__base_largura, self.__base_largura)
-        self.__nave = pygame.Rect(0, self.__nave_max_y, self.__nave_diametro, self.__nave_diametro)
+        self.__base = pygame.Rect(sorteio(0, 700), self.__base_max_x, self.__base_largura, self.__base_largura)
+        self.__nave = pygame.Rect(sorteio(0, 800), sorteio(0, 600), self.__nave_diametro, self.__nave_diametro)
 
     def __movimentar_nave(self):
         """
@@ -105,7 +114,7 @@ class ArkNoid_ML:
 
     def __movimentar_base(self):
         """
-            Movimenta a base e colhe dados
+            Movimenta a base
         """
         __menos, __mais = 5, 5
         if self.__tecla[K_LEFT]:
@@ -122,10 +131,21 @@ class ArkNoid_ML:
         """
             Verifica a colisão
         """
-        if self.__base[0] == self.__nave[0]:
-            self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
-            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
-            # self.__lst_vel_nave[1] *= -1
+        if self.__base[0] == self.__nave[0] - 20:
+            p = self.__nave[0] - 20
+            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1] if p > 200 else self.__lst_vel_nave[1]
+            print(self.__base.left)
+            # if self.__base.left < 0:
+            #     self.__base.left = 0
+
+    def __mostrar_pontuacao(self):
+        """
+        Methodo responsável exibir pontuação
+        """
+        if self.font:
+            f = "Jogo: " + str(self.__pontos_jogo) + " ML: " + str(self.__ml)
+            font_surface = self.font.render(f, False, self.__white)
+            self.__screen.blit(font_surface, (20, 5))
 
     def main(self):
         """
