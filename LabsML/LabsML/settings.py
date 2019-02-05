@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # apps
 
     'LabsML.core',
-    'LabsML.ml',
+    'LabsML.MachineLearning',
 
 ]
 

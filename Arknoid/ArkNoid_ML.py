@@ -132,9 +132,9 @@ class ArkNoid_ML:
             Verifica a colisão
         """
         if self.__base[0] == self.__nave[0] - 20:
-            p = self.__nave[0] - 20
-            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1] if p > 200 else self.__lst_vel_nave[1]
-            print(self.__base.left)
+            p = self.__nave[0]
+            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1] #if p > 200 else self.__lst_vel_nave[1]
+            print(self.__base[0])
             # if self.__base.left < 0:
             #     self.__base.left = 0
 
