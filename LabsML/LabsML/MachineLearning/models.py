@@ -36,3 +36,25 @@ class tb_ml_acoes(models.Model):
     class Meta:
         db_table = "tb_ml_acoes"
         verbose_name = "Regresão Linear"
+
+
+class tb_ml_filmes(models.Model):
+
+    ano_lançamento = models.CharField('Ano Lançamento', blank=True, max_length=10, default=None)
+    titulo_obra = models.CharField('Título', blank=True, max_length=200, default=None)
+    genero = models.CharField('Gêneto', blank=True, max_length=50, default=None)
+    pais_produtor_obra = models.CharField('País Produtor da Obra', blank=True, max_length=100, default=None)
+    nacionalidade_obra = models.CharField('Nacionalidade', blank=True, max_length=100, default=None)
+    data_lançamento = models.CharField('Data Lançamento', blank=True, max_length=10, default=None)
+    distribuidora = models.CharField('Distribuidora', blank=True, max_length=200, default=None)
+    salas_lançamento = models.IntegerField('Salas de Lançamento', blank=b, default=d)
+    maximo_salas_ocupadas = models.IntegerField('Mámo de salas Ocupadas', blank=b, default=d)
+    publico_acumulado = models.IntegerField('Publico Acumulado', blank=b, default=d)
+    renda_acumulada = models.DecimalField('Renda Acumulada', blank=b, default=d, max_digits=n, decimal_places=4)
+
+    def __str__(self):
+        return self.titulo_obra
+
+    class Meta:
+        db_table="tb_ml_filmes"
+        verbose_name = "Sistema de Recomendação"

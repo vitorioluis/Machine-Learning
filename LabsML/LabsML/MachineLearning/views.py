@@ -8,12 +8,11 @@ from django.views.generic import CreateView
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-# metricas de avaliação do modelo
-from sklearn.metrics import confusion_matrix,accuracy_score
-
-
 from .forms import IrisForm
-from .models import Iris
+from .models import Iris, tb_ml_acoes
+
+
+# metricas de avaliação do modelo
 
 
 def cotacao_dolar():
@@ -46,7 +45,7 @@ def mod_regressao_logistica(lst):
     # predicao
     predicao = lm.predict(lst_predict)
     prob = lm.predict_proba(lst_predict).round(2).max() * 100
-    return [predicao[0],prob]
+    return [predicao[0], prob]
 
 
 class LogisticIris(CreateView):
@@ -67,14 +66,30 @@ class LogisticIris(CreateView):
         form = IrisForm(request.POST or None)
         if form.is_valid():
             lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
-            context['predict'],context['prob'] = mod_regressao_logistica(lst)
+            context['predict'], context['prob'] = mod_regressao_logistica(lst)
 
         return render(request, self.template_name, context)
 
 
 class ListaIris(View):
-    template_name = 'dashboard.html'
+    template_name = 'table.html'
+    titulo = ['Comprimento da Sépala', 'Largura da Sépala', 'Comprimento da Petula', 'Largura da Petula', 'Espécie']
 
     def get(self, request):
         iris = Iris.objects.select_related()
-        return render(request, self.template_name, {'objects': iris})
+        context = {'objects': iris, 'campos': self.titulo}
+        return render(request, self.template_name, context)
+
+
+## regressão linear
+class ListaAcoes(View):
+    template_name = 'table.html'
+    titulo = ['Ano lançamento', 'Título da obra', 'Gênero', 'País produtor da obra', 'Nacionalidade da obra',
+              'Data lançamento', 'Distribuidora', 'Salas lançamento', 'Máximo salas ocupadas', 'Público acumulado',
+              'Renda acumulada']
+
+    def get(self, request):
+        acoes = tb_ml_acoes.objects.select_related()
+        context = {'objects': acoes, 'campos': self.titulo}
+
+        return render(request, self.template_name, context)
