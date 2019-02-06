@@ -21,19 +21,18 @@ class Iris(models.Model):
         verbose_name_plural = "Espécies"
 
 
-class tb_ml_preco_combustivel(models.Model):
-    uf = models.CharField('UF', blank=True, max_length=5, default=None)
-    municipio = models.CharField('Município', blank=True, max_length=100, default=None)
+class tb_ml_acoes(models.Model):
     data = models.CharField('Data', blank=True, max_length=10, default=None)
-    posto = models.CharField('Posto', blank=True, max_length=100, default=None)
-    bandeira = models.CharField('Bandeira', blank=True, max_length=50, default=None)
-    produto = models.CharField('produto', blank=True, max_length=20, default=None)
-    preco = models.DecimalField('Preço', blank=b, default=d, max_digits=n, decimal_places=4)
+    open = models.DecimalField('Abertura', blank=b, default=d, max_digits=n, decimal_places=4)
+    max = models.DecimalField('Valor Máximo', blank=b, default=d, max_digits=n, decimal_places=4)
+    min = models.DecimalField('Valor Mínimo', blank=b, default=d, max_digits=n, decimal_places=4)
+    close = models.DecimalField('Valor do Fechamento', blank=b, default=d, max_digits=n, decimal_places=4)
+    adj_close = models.DecimalField('Preço Ajustado Fechamento', blank=b, default=d, max_digits=n, decimal_places=4)
+    volume = models.IntegerField('Volume de Transações', blank=b, default=d)
 
     def __str__(self):
-        return self.posto
+        return str(self.volume)
 
     class Meta:
-        db_table = "tb_ml_preco_combustível"
-        verbose_name = "Preços Combustiveis"
-        verbose_name_plural = "Preço Combustível"
+        db_table = "tb_ml_acoes"
+        verbose_name = "Regresão Linear"
