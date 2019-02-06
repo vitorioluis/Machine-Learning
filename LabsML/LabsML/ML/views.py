@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from .forms import IrisForm
-from .models import Iris, tb_ml_acoes
+from .models import Iris, Acoes
 
 
 # metricas de avaliação do modelo
@@ -53,7 +53,7 @@ class LogisticIris(CreateView):
     template_name = 'new_edit.html'
     models = Iris
     form_class = IrisForm
-    success_url = reverse_lazy('MachineLearning:logistica')
+    success_url = reverse_lazy('ML:logistica')
 
     def get_context_data(self, **kwargs):
         context = super(LogisticIris, self).get_context_data(**kwargs)
@@ -76,7 +76,8 @@ class ListaIris(View):
     titulo = ['Comprimento da Sépala', 'Largura da Sépala', 'Comprimento da Petula', 'Largura da Petula', 'Espécie']
 
     def get(self, request):
-        iris = Iris.objects.select_related()
+        iris = Iris.objects.select_related().values('id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm',
+                                                    'PetalWidthCm', 'Species')
         context = {'objects': iris, 'campos': self.titulo}
         return render(request, self.template_name, context)
 
@@ -84,12 +85,10 @@ class ListaIris(View):
 ## regressão linear
 class ListaAcoes(View):
     template_name = 'table.html'
-    titulo = ['Ano lançamento', 'Título da obra', 'Gênero', 'País produtor da obra', 'Nacionalidade da obra',
-              'Data lançamento', 'Distribuidora', 'Salas lançamento', 'Máximo salas ocupadas', 'Público acumulado',
-              'Renda acumulada']
+    titulo = ['data', 'open', 'max', 'min', 'close', 'adj_close','volume' ]
 
     def get(self, request):
-        acoes = tb_ml_acoes.objects.select_related()
+        acoes = Acoes.objects.select_related().values('id', 'data', 'open', 'max', 'min', 'close', 'adj_close',
+                                                            'volume')
         context = {'objects': acoes, 'campos': self.titulo}
-
         return render(request, self.template_name, context)

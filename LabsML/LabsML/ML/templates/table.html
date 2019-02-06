@@ -15,28 +15,29 @@
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-striped" id="table_padrao">
+
                     <thead>
                     <tr>
                         <th>#</th>
-                        {% for x in campos %}
-                            <th>{{ x }}</th>
+                        {% for c in campos %}
+                            <th>{{ c }}</th>
                         {% endfor %}
-
                     </tr>
                     </thead>
+
+
                     <tbody>
-
-                    {% for x in objects %}
+                    {% for query in objects %}
                     <tr>
-                        {{ x}}
-
-                   </tr>
+                        {% for x in query.values %}
+                        <td>{{ x }}</td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-
                     </tbody>
+
                 </table>
             </div>
-
         </div>
     </div>
 </section>

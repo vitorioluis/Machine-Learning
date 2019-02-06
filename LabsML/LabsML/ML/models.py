@@ -21,7 +21,7 @@ class Iris(models.Model):
         verbose_name_plural = "Espécies"
 
 
-class tb_ml_acoes(models.Model):
+class Acoes(models.Model):
     data = models.CharField('Data', blank=True, max_length=10, default=None)
     open = models.DecimalField('Abertura', blank=b, default=d, max_digits=n, decimal_places=4)
     max = models.DecimalField('Valor Máximo', blank=b, default=d, max_digits=n, decimal_places=4)
@@ -38,7 +38,7 @@ class tb_ml_acoes(models.Model):
         verbose_name = "Regresão Linear"
 
 
-class tb_ml_filmes(models.Model):
+class Filmes(models.Model):
 
     ano_lançamento = models.CharField('Ano Lançamento', blank=True, max_length=10, default=None)
     titulo_obra = models.CharField('Título', blank=True, max_length=200, default=None)
