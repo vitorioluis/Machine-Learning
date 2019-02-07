@@ -23,11 +23,11 @@ class Iris(models.Model):
 
 class Acoes(models.Model):
     data = models.CharField('Data', blank=True, max_length=10, default=None)
-    open = models.DecimalField('Abertura', blank=b, default=d, max_digits=n, decimal_places=4)
+    open = models.DecimalField('Valor na Abertura', blank=b, default=d, max_digits=n, decimal_places=4)
     max = models.DecimalField('Valor Máximo', blank=b, default=d, max_digits=n, decimal_places=4)
     min = models.DecimalField('Valor Mínimo', blank=b, default=d, max_digits=n, decimal_places=4)
     close = models.DecimalField('Valor do Fechamento', blank=b, default=d, max_digits=n, decimal_places=4)
-    adj_close = models.DecimalField('Preço Ajustado Fechamento', blank=b, default=d, max_digits=n, decimal_places=4)
+    adj_close = models.DecimalField('Valor Ajustado no Fechamento', blank=b, default=d, max_digits=n, decimal_places=4)
     volume = models.IntegerField('Volume de Transações', blank=b, default=d)
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Filmes(models.Model):
     salas_lançamento = models.IntegerField('Salas de Lançamento', blank=b, default=d)
     maximo_salas_ocupadas = models.IntegerField('Mámo de salas Ocupadas', blank=b, default=d)
     publico_acumulado = models.IntegerField('Publico Acumulado', blank=b, default=d)
-    renda_acumulada = models.DecimalField('Renda Acumulada', blank=b, default=d, max_digits=n, decimal_places=4)
+    renda_acumulada = models.FloatField('Renda Acumulada', blank=b, default=d)
 
     def __str__(self):
         return self.titulo_obra

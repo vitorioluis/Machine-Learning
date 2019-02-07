@@ -6,9 +6,9 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta content="" name="description">
     <meta content="" name="author">
-    <!-- <link rel="icon" href="../../../../favicon.ico">-->
 
-    <title>Projeto Base {% block title %}{% endblock %}</title>
+
+    <title>Machine Learning {% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -22,37 +22,73 @@
 
 <body>
 
+
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="{% url 'ML:listar_iris' %}">Machine Learning</a>
+
+    <a class="navbar-brand" href="{% url 'core:home' %}">Machine Learning</a>
     <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#navbarCollapse" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'ML:listar_iris' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'ML:logistica' %}">Regressão Logistica</a>
-            </li>
 
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'ML:lista_acoes' %}">Ações</a>
+                <a class="nav-link" href="{% url 'core:home'%}">Home<span class="sr-only">(current)</span></a>
             </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Regressão</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'ML:linear' %}">Regresão Linear</a>
+                    <a class="dropdown-item" href="{% url 'ML:lista_acoes' %}">DataSet Ações Apple</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="" id="dropdown02" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Classificação</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'ML:logistica' %}">Regresão Logística </a>
+                    <a class="dropdown-item" href="{% url 'ML:listar_iris' %}">DataSet Iris</a>
+                </div>
+            </li>
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="" id="dropdown03" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Sistema de Recomendação</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'ML:recomendacao' %}">Sistema Recomendação - Não aplicado</a>
+                    <a class="dropdown-item" href="{% url 'ML:lista_filmes' %}">DataSet Filmes</a>
+                </div>
+            </li>
+
 
         </ul>
 
     </div>
 </nav>
 
+
 <main class="container" role="main">
-    <div class="content">
+
+    {% block jumbotron %}
+    {% endblock %}
+
+
+    <div class="content" >
         {% block content %}
 
         {% endblock %}
     </div>
+
 </main>
+
+<!--<footer class="container">-->
+<!--<p>&copy; Company 2017-2019</p>-->
+<!--</footer>-->
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -61,6 +97,21 @@
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script>window.jQuery || document.write('<script src="{% static 'assets/js/vendor/jquery-slim.min.js' %}"><\/script>')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
@@ -71,7 +122,7 @@
 <script>
 $(document).ready(function() {
       $('#table_padrao').DataTable({
-          "lengthMenu": [[25, 50, -1], [25, 50, "Todos"]],
+          "lengthMenu": [[100, 500, -1], [100, 500, "Todos"]],
           "language": {
               "sSearch": "Pesquisar",
               "sEmptyTable": "Nenhum registro encontrado",
@@ -98,6 +149,21 @@ $(document).ready(function() {
     })
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 

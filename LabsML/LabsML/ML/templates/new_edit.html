@@ -10,12 +10,11 @@
         {% csrf_token %}
 
         {% bootstrap_form form %}
-
         <hr/>
         <div class="row">
             <div class="col-6">
-                <button class="btn btn-primary" type="submit">Regressão</button>
-                <a class="btn btn-default" href="{% url 'ML:listar_iris' %}">Cancelar</a>
+                <button class="btn btn-primary" type="submit">Predict</button>
+                <a class="btn btn-default" href="{% url 'core:home' %}">Cancel</a>
             </div>
         </div>
 
@@ -52,6 +51,7 @@
 $(window).load(function() {
     $('#modalpredict').modal('show');
 });
+
 
 
 

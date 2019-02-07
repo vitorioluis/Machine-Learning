@@ -1,8 +1,10 @@
 # -*- coding: utf8 -*-
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 
-from .models import Iris
+from .models import Iris, Acoes, Filmes
+
+
+# from django.contrib.auth.forms import UserCreationForm
 
 
 class IrisForm(forms.ModelForm):
@@ -11,9 +13,14 @@ class IrisForm(forms.ModelForm):
         fields = ('SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm')
 
 
-class RegisterIris3Form(UserCreationForm):
-    def save(self, commit=True):
-        iris = super(IrisForm, self).save(commit=False)
-        if commit:
-            iris.save()
-        return iris
+class AcoesForm(forms.ModelForm):
+    class Meta:
+        model = Acoes
+        fields = ('open', 'max', 'min', 'volume')
+
+
+class FilmesForm(forms.ModelForm):
+    class Meta:
+        model = Filmes
+        fields = ('ano_lançamento', 'titulo_obra', 'genero', 'data_lançamento', 'distribuidora', 'publico_acumulado')
+

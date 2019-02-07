@@ -8,8 +8,8 @@ from django.views.generic import CreateView
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-from .forms import IrisForm
-from .models import Iris, Acoes
+from .forms import IrisForm, AcoesForm
+from .models import Iris, Acoes, Filmes
 
 
 # metricas de avaliação do modelo
@@ -53,7 +53,7 @@ class LogisticIris(CreateView):
     template_name = 'new_edit.html'
     models = Iris
     form_class = IrisForm
-    success_url = reverse_lazy('ML:logistica')
+    success_url = reverse_lazy('core:home')
 
     def get_context_data(self, **kwargs):
         context = super(LogisticIris, self).get_context_data(**kwargs)
@@ -83,12 +83,50 @@ class ListaIris(View):
 
 
 ## regressão linear
+class LinearAcoes(CreateView):
+    __title = '| Regressão Linear'
+    template_name = 'new_edit.html'
+    models = Acoes
+    form_class = AcoesForm
+    success_url = reverse_lazy('core:home')
+
+    def get_context_data(self, **kwargs):
+        context = super(LinearAcoes, self).get_context_data(**kwargs)
+        context['title'] = self.__title
+        return context
+
+
 class ListaAcoes(View):
     template_name = 'table.html'
-    titulo = ['data', 'open', 'max', 'min', 'close', 'adj_close','volume' ]
+    titulo = ['data', 'open', 'max', 'min', 'close', 'adj_close', 'volume']
 
     def get(self, request):
         acoes = Acoes.objects.select_related().values('id', 'data', 'open', 'max', 'min', 'close', 'adj_close',
-                                                            'volume')
+                                                      'volume')
         context = {'objects': acoes, 'campos': self.titulo}
+        return render(request, self.template_name, context)
+
+
+# sistema de recomendações de filme
+class RecomendacaoFilme(CreateView):
+    __title = '| Sistema de Recomendação'
+    template_name = 'new_edit.html'
+    models = Filmes
+    form_class = Filmes
+    success_url = reverse_lazy('core:home')
+
+    def get_context_data(self, **kwargs):
+        context = super(RecomendacaoFilme, self).get_context_data(**kwargs)
+        context['title'] = self.__title
+        return context
+
+
+class ListaFilmes(View):
+    template_name = 'table.html'
+    titulo = ['ano_lançamento', 'titulo_obra', 'genero', 'data_lançamento', 'distribuidora', 'publico_acumulado']
+
+    def get(self, request):
+        filmes = Filmes.objects.select_related().values('id', 'ano_lançamento', 'titulo_obra', 'genero',
+                                                        'data_lançamento', 'distribuidora', 'publico_acumulado')
+        context = {'objects': filmes, 'campos': self.titulo}
         return render(request, self.template_name, context)
