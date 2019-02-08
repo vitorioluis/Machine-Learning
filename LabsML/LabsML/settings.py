@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'bootstrap3',
 
     # apps
-
     'LabsML.core',
     'LabsML.ML',
 
@@ -62,7 +61,7 @@ ROOT_URLCONF = 'LabsML.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'LabsML/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,25 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'LabsML/core', 'static')
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'LabsML', 'media')
 
 URL_RAIZ = 'http://127.0.0.1:8081/'
 
-LOGO_PADRAO = URL_RAIZ + 'static/img_sistema/NoImg.png'
-NUMERO_ITENS_PAGINA = 20
-
-# Email
-# EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# DEFAULT_FROM_EMAIL = ""
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = ""
-# EMAIL_HOST_USER = ""
-# EMAIL_HOST_PASSWORD = ""
-
-
-# Sessao
-SESSION_COOKIE_AGE = 6000  # tempo para expirar a pagina caso nao haja atividade
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # sessao aberta enquanto o navegador estiver aberto
-SESSION_SAVE_EVERY_REQUEST = True  # sessao seja renovada a cada requisicao
