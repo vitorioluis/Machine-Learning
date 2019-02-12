@@ -21,15 +21,17 @@
     </div>
 </form>
 
-{% if predict %}
-<div class="modal fade" id="modalpredict" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+
+<div class="modal hide fade" id="myModal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h4 class="modal-title" id="gridSystemModalLabel"> Resultado </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
                 <p>Probabilidade de acerto = {{ prob }}%</p>
                 <p>Predição = {{ predict }}</p>
@@ -42,21 +44,19 @@
     </div>
 </div>
 
-<!-- jquery -->
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<!-- bootstrap -->
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<!-- chamada da função -->
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+{% endblock %}
+
+{% block script %}
+
+
 <script type="text/javascript">
-$(window).load(function() {
-    $('#modalpredict').modal('show');
-});
-
-
-
-
+     $(window).load(function(){
+         $('#myModal').modal('show')
+      });
 </script>
-{% endif%}
-
 
 {% endblock %}

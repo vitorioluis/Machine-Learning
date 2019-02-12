@@ -5,8 +5,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
 from .forms import IrisForm, AcoesForm
 from .models import Iris, Acoes, Filmes
@@ -20,13 +21,17 @@ def cotacao_dolar():
     url += "(dataCotacao=@dataCotacao)?@dataCotacao='{0}'&$top=100&$format=json".format('02-15-2019')
 
 
+def convert_list_to_dataframe(lst,lst_colunas):
+    # converter a list com os dados para predição em dataframe
+    return pd.DataFrame(np.array(lst).reshape(1, 4), columns=lst_colunas[:-1])
+
+
 def mod_regressao_logistica(lst):
     """
     Machine Learning na pratica
     """
     lst_colunas = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species']
-    # converter a list com os dados para predição em dataframe
-    lst_predict = pd.DataFrame(np.array(lst).reshape(1, 4), columns=lst_colunas[:-1])
+    lst_predict = convert_list_to_dataframe(lst,lst_colunas)
 
     # dados de iris obtido da base de dados
     data = Iris.objects.all()
@@ -45,7 +50,38 @@ def mod_regressao_logistica(lst):
     # predicao
     predicao = lm.predict(lst_predict)
     prob = lm.predict_proba(lst_predict).round(2).max() * 100
+
+
     return [predicao[0], prob]
+
+
+def mod_regressao_linear(lst):
+    lst_colunas = ['open', 'max', 'min', 'volume', 'close']  # close
+    lst_predict = convert_list_to_dataframe(lst,lst_colunas)
+
+    # dados da base de dados
+    data = Acoes.objects.all()
+    df = pd.DataFrame.from_records(
+        data.values('open', 'max', 'min', 'volume', 'close')
+    )
+
+    x = df.drop('close', axis=1)
+    y = df.close
+
+    x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.4, random_state=101)
+
+    lm = LinearRegression()
+    lm.fit(x_train, y_train)
+
+    # predicao
+    predicao = lm.predict(lst_predict)
+    # prob = lm.predict_proba(st_predict).round(2), max() * 100
+    # prob = metrics.mean_absolute_error(y_teste, predicao)
+
+    # print('MAE:', metrics.mean_absolute_error(y_teste, predicao))
+    # print('MSE:', metrics.mean_squared_error(y_teste, predicao))
+    # print('RMSE:', np.sqrt(metrics.mean_squared_error(y_teste, predicao)))
+    return [round(predicao[0],2), 10]
 
 
 class LogisticIris(CreateView):
@@ -94,6 +130,16 @@ class LinearAcoes(CreateView):
         context = super(LinearAcoes, self).get_context_data(**kwargs)
         context['title'] = self.__title
         return context
+
+    def post(self, request, *args, **kwargs):
+        context = {'form': self.form_class(),
+                   'title': self.__title}
+        form = AcoesForm(request.POST or None)
+        if form.is_valid():
+            lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
+            context['predict'], context['prob'] = mod_regressao_linear(lst)
+
+        return render(request, self.template_name, context)
 
 
 class ListaAcoes(View):
