@@ -1,6 +1,13 @@
 Projetos-Futuros/
 .idea/
 .ipynb_checkpoints/
+<<<<<<< HEAD
+comandos Git.txt
+__pycache__/
+.Rhistory
+.vscode
+=======
 __pycache__/
 .Rhistory
 .DS_Store
+>>>>>>> f657d5ef9ce50237560dfc4e33ee4d0190d5f201
