@@ -1,51 +1,80 @@
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 import cv2
+import numpy as np
 
+import NameFind
+from constantes import CLF_EYE, COR_EYE, FONT, WHITE, CLF_FACE, COR_FACE
+
+
+# pip install opencv-python
 # documentação do Opencv => https://opencv-python-tutroals.readthedocs.io
 
-# cores
-COR_RET_FACE = (0, 255, 0)
-COR_RET_EYE = (255, 0, 0)
 
-# obter os cascades em => https://github.com/opencv/opencv/tree/master/data/haarcascades
-cascade_face_path = 'cascade/haarcascade_frontalface_default.xml'
-cascade_eye_open_path = 'cascade/haarcascade_eye_tree_eyeglasses.xml'
+def captura_fotos_novo_reconhecimento_facial():
+    ID = NameFind.AddName()
+    Count = 0
+    cap = cv2.VideoCapture(0)  # Camera object
 
-# criar classificadores
-clf_face = cv2.CascadeClassifier(cascade_face_path)
-clf_eye_open = cv2.CascadeClassifier(cascade_eye_open_path)
-
-cap = cv2.VideoCapture(0)
-font = cv2.FONT_HERSHEY_SIMPLEX
-
-while True:
-    ret, frame = cap.read()
-    if ret:
-        # converte em cinza
-        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = clf_face.detectMultiScale(frame_gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-
-        # verifica se consegui detectar
-        for x, y, w, h in faces:
-            # desenha um retangulo no rosto
-            frame = cv2.rectangle(frame, (x, y), (x + w, y + h), COR_RET_FACE, 2)
-            cv2.putText(frame, 'Boiola', (x - 10, y - 10), font, 1, COR_RET_EYE, 2, cv2.LINE_AA)
-
-            # detecção de olhos
-            r_gray = frame_gray[y:y + h, x:x + w]
-            r_color = frame[y:y + h, x:x + w]
-
-            # olhos abertos
-            open_eyes = clf_eye_open.detectMultiScale(r_gray)
-            for ex, ey, ew, eh in open_eyes:
-                # desenha o retangulo nos olhos
-                cv2.rectangle(r_color, (ex, ey), (ex + ew, ey + eh), COR_RET_EYE, 2)
-
-        cv2.imshow('Video', frame)
-        k = cv2.waitKey(30) & 0xff
-
-        if k == 27:
+    while Count < 50:
+        ret, img = cap.read()
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert the Camera to grayScale
+        if np.average(gray) > 110:  # Testing the brightness of the image
+            faces = CLF_FACE.detectMultiScale(gray, 1.3, 5)  # Detect the faces and store the positions
+            for (x, y, w, h) in faces:  # Frames  LOCATION X, Y  WIDTH, HEIGHT
+                FaceImage = gray[y - int(h / 2): y + int(h * 1.5),
+                            x - int(x / 2): x + int(w * 1.5)]  # The Face is isolated and cropped
+                Img = (NameFind.DetectEyes(FaceImage))
+                cv2.putText(gray, "FACE DETECTED", (x + int((w / 2)), y - 5), cv2.FONT_HERSHEY_DUPLEX, .4, WHITE)
+                if Img is not None:
+                    frame = Img  # Show the detected faces
+                else:
+                    frame = gray[y: y + h, x: x + w]
+                cv2.imwrite("fotos/User." + str(ID) + "." + str(Count) + ".jpg", frame)
+                cv2.waitKey(300)
+                cv2.imshow("CAPTURED PHOTO", frame)  # show the captured image
+                Count = Count + 1
+        cv2.imshow('Face Recognition System Capture Faces', gray)  # Show the video
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    print('FACE CAPTURE FOR THE SUBJECT IS COMPLETE')
+    cap.release()
+    cv2.destroyAllWindows()
 
-cap.release()
-cv2.destroyAllWindows()
+
+def deteccao_face_video():
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        ret, frame = cap.read()
+        if ret:
+            # converte em cinza
+            frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = CLF_FACE.detectMultiScale(frame_gray, 1.1, 5, minSize=(30, 30))
+
+            for x, y, w, h in faces:
+                # desenha um retangulo na face
+                NameFind.draw_box(frame, x, y, w, h)
+                cv2.putText(frame, '...', (x - 5, y - 10), FONT, 1, COR_EYE, 2)
+
+                # detecção dos olhos
+                r_gray = frame_gray[y:y + h, x:x + w]
+                r_color = frame[y:y + h, x:x + w]
+
+                open_eyes = CLF_EYE.detectMultiScale(r_gray)
+                for ex, ey, ew, eh in open_eyes:
+                    # desenha o retangulo nos olhos
+                    NameFind.draw_box(r_color, ex, ey, ew, eh)
+
+            cv2.imshow('Deteccao Facial', frame)
+            k = cv2.waitKey(30) & 0xff
+
+            if k == 27:
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    # captura_fotos_novo_reconhecimento_facial()
+    deteccao_face_video()
