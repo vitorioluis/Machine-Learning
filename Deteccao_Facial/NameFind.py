@@ -5,7 +5,7 @@ import os  # Files Library
 import time  # Time count Library
 import cv2  # Video Capture Library
 
-from constantes import CLF_EYE, WHITE, CLF_FACE
+from constantes import CLF_EYE, WHITE, CLF_FACE,COR_FACE
 
 now_time = time.clock()
 
@@ -95,14 +95,14 @@ def DispID(x, y, w, h, NAME, Image):
 
 
 def draw_box(Image, x, y, w, h):
-    cv2.line(Image, (x, y), (x + (int(w / 5)), y), WHITE, 2)
-    cv2.line(Image, (x + (int(w / 5) * 4), y), (x + w, y), WHITE, 2)
-    cv2.line(Image, (x, y), (x, y + (int(h / 5))), WHITE, 2)
-    cv2.line(Image, (x + w, y), (x + w, y + int((h / 5))), WHITE, 2)
-    cv2.line(Image, (x, (y + int((h / 5 * 4)))), (x, y + h), WHITE, 2)
-    cv2.line(Image, (x, (y + h)), (x + int((w / 5)), y + h), WHITE, 2)
-    cv2.line(Image, (x + (int((w / 5) * 4)), y + h), (x + w, y + h), WHITE, 2)
-    cv2.line(Image, (x + w, (y + int((h / 5 * 4)))), (x + w, y + h), WHITE, 2)
+    cv2.line(Image, (x, y), (x + (int(w / 5)), y), COR_FACE, 2)
+    cv2.line(Image, (x + (int(w / 5) * 4), y), (x + w, y), COR_FACE, 2)
+    cv2.line(Image, (x, y), (x, y + (int(h / 5))), COR_FACE, 2)
+    cv2.line(Image, (x + w, y), (x + w, y + int((h / 5))), COR_FACE, 2)
+    cv2.line(Image, (x, (y + int((h / 5 * 4)))), (x, y + h), COR_FACE, 2)
+    cv2.line(Image, (x, (y + h)), (x + int((w / 5)), y + h), COR_FACE, 2)
+    cv2.line(Image, (x + (int((w / 5) * 4)), y + h), (x + w, y + h), COR_FACE, 2)
+    cv2.line(Image, (x + w, (y + int((h / 5 * 4)))), (x + w, y + h), COR_FACE, 2)
 
 
 # ---------------     SECOND ID BOX      ----------------------

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # libs
-    'bootstrap3',
+    'bootstrap3', # Utilizados nos forms
 
     # apps
     'LabsML.core',
