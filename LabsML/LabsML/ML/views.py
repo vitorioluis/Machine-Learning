@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
-from .forms import IrisForm, AcoesForm
+from .forms import IrisForm, AcoesForm, FilmesForm
 from .models import Iris, Acoes, Filmes
 
 
@@ -158,7 +158,7 @@ class RecomendacaoFilme(CreateView):
     __title = '| Sistema de Recomendação'
     template_name = 'new_edit.html'
     models = Filmes
-    form_class = Filmes
+    form_class = FilmesForm
     success_url = reverse_lazy('core:home')
 
     def get_context_data(self, **kwargs):
