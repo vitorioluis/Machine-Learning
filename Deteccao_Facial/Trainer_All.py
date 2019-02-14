@@ -14,7 +14,7 @@ EigenFace = cv2.face.EigenFaceRecognizer_create(15)  # creating EIGEN FACE RECOG
 FisherFace = cv2.face.FisherFaceRecognizer_create(2)  # Create FISHER FACE RECOGNISER
 LBPHFace = cv2.face.LBPHFaceRecognizer_create(1, 1, 7, 7)  # Create LBPH FACE RECOGNISER
 
-
+cv2.face.EigenFaceRecognizer_create()
 path = 'fotos'  # path to the photos
 
 
@@ -42,13 +42,15 @@ EigenFace.train(FaceList, IDs)  # The recongniser is trained using the images
 print('EIGEN FACE RECOGNISER COMPLETE...')
 EigenFace.save('Recogniser/trainingDataEigan.xml')
 print('FILE SAVED..')
-FisherFace.train(FaceList, IDs)
-print('FISHER FACE RECOGNISER COMPLETE...')
-FisherFace.save('Recogniser/trainingDataFisher.xml')
-print('Fisher Face XML saved... ')
-LBPHFace.train(FaceList, IDs)
-print('LBPH FACE RECOGNISER COMPLETE...')
-LBPHFace.save('Recogniser/trainingDataLBPH.xml')
-print('ALL XML FILES SAVED...')
+
+
+# FisherFace.train(FaceList, IDs)
+# print('FISHER FACE RECOGNISER COMPLETE...')
+# FisherFace.save('Recogniser/trainingDataFisher.xml')
+# print('Fisher Face XML saved... ')
+# LBPHFace.train(FaceList, IDs)
+# print('LBPH FACE RECOGNISER COMPLETE...')
+# LBPHFace.save('Recogniser/trainingDataLBPH.xml')
+# print('ALL XML FILES SAVED...')
 
 cv2.destroyAllWindows()
