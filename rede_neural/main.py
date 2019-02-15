@@ -40,9 +40,7 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for k in range(20000):
-
         x_batch, y_batch = mnist.train.next_batch(100)
-
         step, e = sess.run([train_step, error], feed_dict={x: x_batch, y: y_batch})
 
         if k % 100 == 0:

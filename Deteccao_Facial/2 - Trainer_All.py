@@ -7,7 +7,6 @@ import cv2  # importing the OpenCV library
 import numpy as np  # importing Numpy library
 from PIL import Image  # importing Image library
 
-
 # pip install opencv-contrib-python
 
 EigenFace = cv2.face.EigenFaceRecognizer_create(15)  # creating EIGEN FACE RECOGNISER
@@ -42,7 +41,6 @@ EigenFace.train(FaceList, IDs)  # The recongniser is trained using the images
 print('EIGEN FACE RECOGNISER COMPLETE...')
 EigenFace.save('Recogniser/trainingDataEigan.xml')
 print('FILE SAVED..')
-
 
 # FisherFace.train(FaceList, IDs)
 # print('FISHER FACE RECOGNISER COMPLETE...')
