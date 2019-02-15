@@ -33,7 +33,12 @@ while True:
             NAME = NameFind.ID2Name(ID, conf)
             NameFind.DispID(x, y, w, h, NAME, gray)
     cv2.imshow('EigenFace Face Recognition System', gray)  # Show the video
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # Quit if the key is Q
+    # if cv2.waitKey(1) & 0xFF == ord('q'):  # Quit if the key is Q
+    #     break
+
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
         break
+
 cap.release()
 cv2.destroyAllWindows()
