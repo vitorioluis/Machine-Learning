@@ -5,8 +5,8 @@
 * FISHER Face
 * LBPH Face
 
-Para executar o projeto é necessaio instalar os "requeriments.txt" além do python
-Em seguida executar a seguinte sequencia:
+Para executar o projeto é necessário instalar os "requeriments.txt" além do Python. 
+Em seguida executar a seguinte sequência:
 
 #### 1 - Captura Fotos.py:
 O script tira as fotos e armazena na pasta "dados/Reconhecimento"
