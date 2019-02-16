@@ -44,7 +44,7 @@ def ID2Name(ID, conf):
             for s in string_last.split():
                 if s.isdigit():
                     last_string = int(s)
-                    print("A base possui: " + str(last_string) + " " + "pessoas")
+                    # print("A base possui: " + str(last_string) + " " + "pessoas")
 
     if 1 <= ID <= last_string:
         NameString = Names[ID - 1]
