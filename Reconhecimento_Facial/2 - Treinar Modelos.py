@@ -24,24 +24,24 @@ def getImageWithID(path):
 
 if __name__ == "__main__":
     # diretorio das fotos
-    path = 'fotos'
+    path = 'dados/fotos'
     cv2.face.EigenFaceRecognizer_create()
     IDs, FaceList = getImageWithID(path)
 
     print('EIGEN')
     EigenFace = cv2.face.EigenFaceRecognizer_create(15)
     EigenFace.train(FaceList, IDs)
-    EigenFace.save('Reconhecimento/trainingDataEigan.xml')
+    EigenFace.save('dados/Reconhecimento/trainingDataEigan.xml')
 
     print('FISHER')
     FisherFace = cv2.face.FisherFaceRecognizer_create(2)
     FisherFace.train(FaceList, IDs)
-    FisherFace.save('Reconhecimento/trainingDataFisher.xml')
+    FisherFace.save('dados/Reconhecimento/trainingDataFisher.xml')
 
     print('LBPH')
     LBPHFace = cv2.face.LBPHFaceRecognizer_create(1, 1, 7, 7)
     LBPHFace.train(FaceList, IDs)
-    LBPHFace.save('Reconhecimento/trainingDataLBPH.xml')
+    LBPHFace.save('dados/Reconhecimento/trainingDataLBPH.xml')
 
     print('treino dos modelos concluido...')
     cv2.destroyAllWindows()

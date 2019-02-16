@@ -10,7 +10,7 @@ from constantes import CLF_EYE, WHITE, CLF_FACE, COR_FACE
 
 now_time = time.clock()
 
-base_nomes='cadastro.txt'
+base_nomes='dados/cadastro.txt'
 
 
 def FileRead():

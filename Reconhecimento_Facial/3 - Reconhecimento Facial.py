@@ -11,7 +11,6 @@ from constantes import CLF_FACE
 def deteccao_face_video(modelo):
     cap = cv2.VideoCapture(0)
     # cap = cv2.VideoCapture('TestVid.wmv')
-    ID = 0
     while True:
         ret, frame = cap.read()
         if ret:
@@ -45,13 +44,13 @@ if __name__ == "__main__":
     x = int(input('Escolha uma opção: '))
     if x == 1:
         modelo = cv2.face.EigenFaceRecognizer_create(15, 4000)
-        modelo.read("Reconhecimento/trainingDataEigan.xml")
+        modelo.read("dados/Reconhecimento/trainingDataEigan.xml")
     elif x == 2:
         modelo = cv2.face.FisherFaceRecognizer_create(2)
-        modelo.read("Reconhecimento/trainingDataFisher.xml")
+        modelo.read("dados/Reconhecimento/trainingDataFisher.xml")
     elif x == 3:
         modelo = cv2.face.LBPHFaceRecognizer_create(1, 1, 7, 7)
-        modelo.read('Reconhecimento/trainingDataLBPH.xml')
+        modelo.read('dados/Reconhecimento/trainingDataLBPH.xml')
     else:
         print("Opção desconhecida")
         cv2.destroyAllWindows()

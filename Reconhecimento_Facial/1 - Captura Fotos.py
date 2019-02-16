@@ -31,7 +31,7 @@ def captura_fotos_novo_reconhecimento_facial():
                     frame = Img
                 else:
                     frame = gray[y: y + h, x: x + w]
-                cv2.imwrite("fotos/rosto." + str(ID) + "." + str(Count) + ".jpg", frame)
+                cv2.imwrite("dados/fotos/rosto." + str(ID) + "." + str(Count) + ".jpg", frame)
                 cv2.waitKey(300)
                 cv2.imshow("FOTO CAPTURADA", frame)
                 Count = Count + 1
@@ -40,7 +40,6 @@ def captura_fotos_novo_reconhecimento_facial():
         # finaliza com esc
         if cv2.waitKey(30) & 0xff == 27:
             break
-
 
     print('FOTOS CAPTURADAS COM SUCESSO COMPLETA')
 
