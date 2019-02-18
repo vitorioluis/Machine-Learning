@@ -4,16 +4,16 @@ import cv2
 import numpy as np
 
 import NameFind
-from constantes import WHITE, FACE_CASCADE
+from constantes import WHITE, FACE_CASCADE, FONT
 
 
 def captura_fotos_novo_reconhecimento_facial():
-    num_fotos_captura = 70
-    ID = NameFind.AddName()
-    Count = 0
+    num_fotos_captura = 70  # número de fotos a ser capturadas
+    id_name = NameFind.AddName() # busca o id do nome no cadastro
     cap = cv2.VideoCapture(0)  # camera do note
+    count = 0
 
-    while Count < num_fotos_captura:
+    while count < num_fotos_captura:
         ret, img = cap.read()
         # Converte a camera em cinza
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -24,25 +24,25 @@ def captura_fotos_novo_reconhecimento_facial():
             # X, Y LARGURA, ALTURA
             for (x, y, w, h) in faces:
                 # Reconhecimento do rosto e cortando a img
-                FaceImage = gray[y - int(h / 2): y + int(h * 1.5), x - int(x / 2): x + int(w * 1.5)]
-                Img = (NameFind.DetectEyes(FaceImage))
-                cv2.putText(gray, "Rosto detectado", (x + int(w / 2), y - 5), cv2.FONT_HERSHEY_DUPLEX, .4, WHITE)
-                if Img is not None:
+                face_image = gray[y - int(h / 2): y + int(h * 1.5), x - int(x / 2): x + int(w * 1.5)]
+                img = NameFind.DetectEyes(face_image)
+                cv2.putText(gray, "Rosto detectado", (x + int(w / 2), y - 5), FONT, .4, WHITE)
+                if img is not None:
                     # Mostra rosto detectado
-                    frame = Img
+                    frame = img
                 else:
                     frame = gray[y: y + h, x: x + w]
-                cv2.imwrite("dados/fotos/rosto." + str(ID) + "." + str(Count) + ".jpg", frame)
+                cv2.imwrite("dados/fotos/rosto." + str(id_name) + "." + str(count) + ".jpg", frame)
                 cv2.waitKey(300)
                 cv2.imshow("FOTO CAPTURADA", frame)
-                Count = Count + 1
+                count += 1
         cv2.imshow('Cadastro de fotos', gray)
 
         # finaliza com esc
         if cv2.waitKey(30) & 0xff == 27:
             break
 
-    print('FOTOS CAPTURADAS COM SUCESSO COMPLETA')
+    print('FOTOS CAPTURADAS COM SUCESSO!')
 
     cap.release()
     cv2.destroyAllWindows()

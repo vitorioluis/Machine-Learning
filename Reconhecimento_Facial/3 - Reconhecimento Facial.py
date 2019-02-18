@@ -22,9 +22,9 @@ def deteccao_face_video(modelo, tp):
 
             for x, y, w, h in faces:
                 r_gray = cv2.resize((frame_gray[y:y + h, x:x + w]), (110, 110))
-                ID, conf = modelo.predict(r_gray)  # Determine the ID of the photo
-                NAME = NameFind.ID2Name(ID, conf)
-                NameFind.DispID(x, y, w, h, NAME, frame_gray)
+                id_face, conf = modelo.predict(r_gray)  # Determine the ID of the photo
+                name_face = NameFind.ID2Name(id_face, conf)
+                NameFind.DispID(x, y, w, h, name_face, frame_gray)
 
             cv2.imshow(title, frame_gray)
             k = cv2.waitKey(30) & 0xff
@@ -39,6 +39,7 @@ def deteccao_face_video(modelo, tp):
 if __name__ == "__main__":
     while True:
         print('-- Modelos de reconhecimento facial disponíveis --')
+
         print('1 - EIGEN')
         print('2 - FISHER')
         print('3 - LBPH')
@@ -50,7 +51,7 @@ if __name__ == "__main__":
             modelo = cv2.face.EigenFaceRecognizer_create(15, 4000)
             modelo.read("dados/Reconhecimento/trainingDataEigan.xml")
         elif x == 2:
-            tp='FISHER'
+            tp = 'FISHER'
             modelo = cv2.face.FisherFaceRecognizer_create(2)
             modelo.read("dados/Reconhecimento/trainingDataFisher.xml")
         elif x == 3:

@@ -1,16 +1,16 @@
 # -*- coding:utf-8 -*-
 
-import math
 import os
-import time
 
 import cv2
+import math
+import time
 
-from constantes import EYE_CASCADE, WHITE, FACE_CASCADE, WHITE
+from constantes import EYE_CASCADE, FACE_CASCADE, WHITE
 
 now_time = time.clock()
 
-base_nomes='dados/cadastro.txt'
+base_nomes = 'dados/cadastro.txt'
 
 
 def FileRead():
@@ -180,7 +180,7 @@ def DetectEyes(Image):
 
             if (DX != 0.0) and (DY != 0.0):  # Make sure the the change happens only if there is an angle
                 Theta = math.degrees(math.atan(round(float(DY) / float(DX), 2)))  # Find the Angle
-                print("Theta  " + str(Theta))
+                # print("Theta  " + str(Theta))
 
                 M = cv2.getRotationMatrix2D((cols / 2, rows / 2), Theta, 1)  # Find the Rotation Matrix
                 Image = cv2.warpAffine(Image, M, (cols, rows))
