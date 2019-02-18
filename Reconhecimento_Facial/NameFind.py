@@ -6,7 +6,7 @@ import time
 
 import cv2
 
-from constantes import CLF_EYE, WHITE, CLF_FACE, WHITE
+from constantes import EYE_CASCADE, WHITE, FACE_CASCADE, WHITE
 
 now_time = time.clock()
 
@@ -16,7 +16,7 @@ base_nomes='dados/cadastro.txt'
 def FileRead():
     Info = open(base_nomes, "r")  # Open th text file in readmode
     NAME = []  # The tuple to store Names
-    while (True):  # Read all the lines in the file and store them in two tuples
+    while True:  # Read all the lines in the file and store them in two tuples
         Line = Info.readline()
         if Line == '':
             break
@@ -115,7 +115,7 @@ def DispID2(x, y, w, h, NAME, Image):
 
     if Name_X_pos < 0:
         Name_X_pos = 0
-    elif (Name_X_pos + 10 + (len(NAME) * 7) > Image.shape[1]):
+    elif Name_X_pos + 10 + (len(NAME) * 7) > Image.shape[1]:
         Name_X_pos = Name_X_pos - (Name_X_pos + 10 + (len(NAME) * 7) - (Image.shape[1]))
     if Name_y_pos < 0:
         Name_y_pos = Name_y_pos = y + h + 10
@@ -139,7 +139,7 @@ def DispID3(x, y, w, h, NAME, Image):
 
     if Name_X_pos < 0:
         Name_X_pos = 0
-    elif (Name_X_pos + 10 + (len(NAME) * 7) > Image.shape[1]):
+    elif Name_X_pos + 10 + (len(NAME) * 7) > Image.shape[1]:
         Name_X_pos = Name_X_pos - (Name_X_pos + 10 + (len(NAME) * 7) - (Image.shape[1]))
     if Name_y_pos < 0:
         Name_y_pos = Name_y_pos = y + h + 10
@@ -163,9 +163,8 @@ def DrawBox(Image, x, y, w, h):
 
 
 def DetectEyes(Image):
-    Theta = 0
     rows, cols = Image.shape
-    glass = CLF_EYE.detectMultiScale(Image)  # This ditects the eyes
+    glass = EYE_CASCADE.detectMultiScale(Image)  # This ditects the eyes
     for (sx, sy, sw, sh) in glass:
         if glass.shape[0] == 2:  # The Image should have 2 eyes
             if glass[1][0] > glass[0][0]:
@@ -186,7 +185,7 @@ def DetectEyes(Image):
                 M = cv2.getRotationMatrix2D((cols / 2, rows / 2), Theta, 1)  # Find the Rotation Matrix
                 Image = cv2.warpAffine(Image, M, (cols, rows))
 
-                Face2 = CLF_FACE.detectMultiScale(Image, 1.3, 5)  # This detects a face in the image
+                Face2 = FACE_CASCADE.detectMultiScale(Image, 1.3, 5)  # This detects a face in the image
                 for (FaceX, FaceY, FaceWidth, FaceHeight) in Face2:
                     CroppedFace = Image[FaceY: FaceY + FaceHeight, FaceX: FaceX + FaceWidth]
                     return CroppedFace

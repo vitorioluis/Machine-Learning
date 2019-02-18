@@ -38,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # libs
-    'bootstrap3', # Utilizados nos forms
+    'bootstrap3',  # Utilizados nos forms
 
     # apps
     'LabsML.core',
-    'LabsML.ML',
+    'LabsML.ML',  # modelos de Machine Learning
+    'LabsML.RF'  # reconhecimento facial
 
 ]
 
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'LabsML.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'LabsML/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'LabsML', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,4 +127,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'LabsML/core', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'LabsML', 'media')
 
 URL_RAIZ = 'http://127.0.0.1:8081/'
-

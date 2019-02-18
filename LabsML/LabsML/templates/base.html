@@ -38,7 +38,6 @@
             overflow: auto;
         }
 
-
     </style>
 
 
@@ -86,9 +85,8 @@
                 <a class="nav-link dropdown-toggle" href="" id="dropdown03" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">Sistema de Recomendação</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="{% url 'ML:recomendacao' %}">Sistema Recomendação - Não
-                        aplicado</a>
-                    <a class="dropdown-item" href="{% url 'ML:lista_filmes' %}">DataSet Filmes</a>
+                    <!--<a class="dropdown-item" href="{% url 'ML:recomendacao' %}">Sistema Recomendação </a>-->
+                    <a class="dropdown-item" href="{% url 'ML:lista_filmes' %}">Sistema Recomendação</a>
                 </div>
             </li>
 
@@ -142,21 +140,22 @@
                 autoFill: true,
                 dom: 'Bfrtip',
                 select: true,
-                buttons: [
+                 buttons: [
                     {
                         text: 'Get selected data',
                         action: function () {
-                            var count = table.rows({ selected: true }).row().data();
+                            var linha = $.map(table.rows('.selected').data(),function(item){
+                            return item[2];
+                            });
 
-                            events.prepend('<div>' + count[5] + ' row(s) selected</div>');
-                            console.log(count[5])
+                            events.prepend('<div>' + linha[0] + '</div>');
+                            <!--console.log(linha[0])-->
                         }
                     }
                 ]
+
             });
         });
-
-
 
 
 </script>
