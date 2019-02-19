@@ -8,7 +8,7 @@ from constantes import WHITE, FACE_CASCADE, FONT
 
 
 def captura_fotos_novo_reconhecimento_facial():
-    num_fotos_captura = 70  # número de fotos a ser capturadas
+    num_fotos_captura = 50  # número de fotos a ser capturadas
     id_name = NameFind.AddName() # busca o id do nome no cadastro
     cap = cv2.VideoCapture(0)  # camera do note
     count = 0
@@ -32,7 +32,7 @@ def captura_fotos_novo_reconhecimento_facial():
                     frame = img
                 else:
                     frame = gray[y: y + h, x: x + w]
-                cv2.imwrite("dados/fotos/rosto." + str(id_name) + "." + str(count) + ".jpg", frame)
+                cv2.imwrite("dados/fotos/" + str(id_name) + "." + str(count) + ".jpg", frame)
                 cv2.waitKey(300)
                 cv2.imshow("FOTO CAPTURADA", frame)
                 count += 1

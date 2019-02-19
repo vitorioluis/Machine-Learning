@@ -49,7 +49,7 @@ def ID2Name(ID, conf):
     if 1 <= ID <= last_string:
         NameString = Names[ID - 1]
     else:
-        NameString = " Rosto não reconhecido "
+        NameString = " Desconhecido "
 
     return NameString
 
