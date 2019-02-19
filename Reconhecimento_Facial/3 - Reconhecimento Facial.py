@@ -9,7 +9,7 @@ from constantes import FACE_CASCADE
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html
 
 
-def deteccao_face_video(modelo, tp):
+def reconecimento_facial_video(modelo, tp):
     title = 'Reconhecimento Facial openCV - ' + tp
     cap = cv2.VideoCapture(0)
     # cap = cv2.VideoCapture('TestVid.wmv')
@@ -22,7 +22,7 @@ def deteccao_face_video(modelo, tp):
 
             for x, y, w, h in faces:
                 r_gray = cv2.resize((frame_gray[y:y + h, x:x + w]), (110, 110))
-                id_face, conf = modelo.predict(r_gray)  # Determine the ID of the photo
+                id_face, conf = modelo.predict(r_gray)
                 name_face = NameFind.ID2Name(id_face, conf)
                 NameFind.DispID(x, y, w, h, name_face, frame_gray)
 
@@ -67,4 +67,4 @@ if __name__ == "__main__":
             cv2.destroyAllWindows()
 
         if x <= 3:
-            deteccao_face_video(modelo, tp)
+            reconecimento_facial_video(modelo, tp)

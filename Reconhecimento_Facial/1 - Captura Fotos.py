@@ -9,7 +9,7 @@ from constantes import WHITE, FACE_CASCADE, FONT
 
 def captura_fotos_novo_reconhecimento_facial():
     num_fotos_captura = 50  # número de fotos a ser capturadas
-    id_name = NameFind.AddName() # busca o id do nome no cadastro
+    id_name = NameFind.AddName()  # busca o id do nome no cadastro
     cap = cv2.VideoCapture(0)  # camera do note
     count = 0
 
@@ -25,8 +25,8 @@ def captura_fotos_novo_reconhecimento_facial():
             for (x, y, w, h) in faces:
                 # Reconhecimento do rosto e cortando a img
                 face_image = gray[y - int(h / 2): y + int(h * 1.5), x - int(x / 2): x + int(w * 1.5)]
-                img = NameFind.DetectEyes(face_image)
-                cv2.putText(gray, "Rosto detectado", (x + int(w / 2), y - 5), FONT, .4, WHITE)
+                img = (NameFind.DetectEyes(face_image))
+                cv2.putText(gray, "ROSTO DETECTADO", (x+int((w/2)), y-5), FONT, .4, WHITE)
                 if img is not None:
                     # Mostra rosto detectado
                     frame = img
@@ -34,9 +34,9 @@ def captura_fotos_novo_reconhecimento_facial():
                     frame = gray[y: y + h, x: x + w]
                 cv2.imwrite("dados/fotos/" + str(id_name) + "." + str(count) + ".jpg", frame)
                 cv2.waitKey(300)
-                cv2.imshow("FOTO CAPTURADA", frame)
+                cv2.imshow(str(count), frame)
                 count += 1
-        cv2.imshow('Cadastro de fotos', gray)
+        cv2.imshow('Caputura de fotos', gray)
 
         # finaliza com esc
         if cv2.waitKey(30) & 0xff == 27:
@@ -46,6 +46,7 @@ def captura_fotos_novo_reconhecimento_facial():
 
     cap.release()
     cv2.destroyAllWindows()
+
 
 
 if __name__ == "__main__":
