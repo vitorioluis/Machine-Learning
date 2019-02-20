@@ -10,7 +10,7 @@ class ArkNoid_ML:
     def __init__(self):
         pygame.init()
 
-        pygame.display.set_caption("Machine Learning")
+        pygame.display.set_caption("Machine Learning - Luís Vitório")
 
         # Importação das imagens
         self.__img_nave = pygame.image.load('img/nave.png')
@@ -53,7 +53,8 @@ class ArkNoid_ML:
         self.__nave_diametro = 70
         self.__nave_area = self.__nave_diametro / 2
         self.__nave_max_x = self.__resolucao_tela[0] - self.__nave_diametro
-        self.__nave_max_y = self.__resolucao_tela[1] - self.__nave_diametro + 20
+        self.__nave_max_y = self.__resolucao_tela[1] - \
+            self.__nave_diametro + 20
 
         # posição inicial da nave
         self.__xpos = 310
@@ -74,11 +75,13 @@ class ArkNoid_ML:
         self.__lst_vel_nave = [5, -5]
 
         # sorteio da posição dos objetos da tela
-        sorteio = lambda x, y: random.randint(x, y)
+        def sorteio(x, y): return random.randint(x, y)
 
         # inicia objetos na tela
-        self.__base = pygame.Rect(sorteio(0, 700), self.__base_max_x, self.__base_largura, self.__base_largura)
-        self.__nave = pygame.Rect(sorteio(0, 800), sorteio(0, 600), self.__nave_diametro, self.__nave_diametro)
+        self.__base = pygame.Rect(
+            sorteio(0, 700), self.__base_max_x, self.__base_largura, self.__base_largura)
+        self.__nave = pygame.Rect(sorteio(0, 800), sorteio(
+            0, 600), self.__nave_diametro, self.__nave_diametro)
 
     def __movimentar_nave(self):
         """
@@ -131,12 +134,10 @@ class ArkNoid_ML:
         """
             Verifica a colisão
         """
-        if self.__base[0] == self.__nave[0] - 20:
+        if self.__nave.colliderect(self.__base):
             p = self.__nave[0]
-            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1] #if p > 200 else self.__lst_vel_nave[1]
+            self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
             print(self.__base[0])
-            # if self.__base.left < 0:
-            #     self.__base.left = 0
 
     def __mostrar_pontuacao(self):
         """
@@ -184,8 +185,10 @@ class ArkNoid_ML:
             self.__screen.blit(self.__img_fundo, (0, 0))
 
             # movendo a imagens
-            self.__screen.blit(self.__img_nave, (self.__nave.left, self.__nave.top))
-            self.__screen.blit(self.__img_base, (self.__base.left, self.__resolucao_tela[1] - 30))
+            self.__nave = self.__screen.blit(
+                self.__img_nave, (self.__nave.left, self.__nave.top))
+            self.__base = self.__screen.blit(
+                self.__img_base, (self.__base.left, self.__resolucao_tela[1] - 30))
 
             # atualiza a tela
             pygame.display.flip()
