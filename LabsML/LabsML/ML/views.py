@@ -18,10 +18,11 @@ from .models import Iris, Acoes, Filmes
 
 def cotacao_dolar():
     url = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia"
-    url += "(dataCotacao=@dataCotacao)?@dataCotacao='{0}'&$top=100&$format=json".format('02-15-2019')
+    url += "(dataCotacao=@dataCotacao)?@dataCotacao='{0}'&$top=100&$format=json".format(
+        '02-15-2019')
 
 
-def convert_list_to_dataframe(lst,lst_colunas):
+def convert_list_to_dataframe(lst, lst_colunas):
     # converter a list com os dados para predição em dataframe
     return pd.DataFrame(np.array(lst).reshape(1, 4), columns=lst_colunas[:-1])
 
@@ -30,20 +31,23 @@ def mod_regressao_logistica(lst):
     """
     Machine Learning na pratica
     """
-    lst_colunas = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species']
-    lst_predict = convert_list_to_dataframe(lst,lst_colunas)
+    lst_colunas = ['SepalLengthCm', 'SepalWidthCm',
+                   'PetalLengthCm', 'PetalWidthCm', 'Species']
+    lst_predict = convert_list_to_dataframe(lst, lst_colunas)
 
     # dados de iris obtido da base de dados
     data = Iris.objects.all()
     df = pd.DataFrame.from_records(
-        data.values('SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species')
+        data.values('SepalLengthCm', 'SepalWidthCm',
+                    'PetalLengthCm', 'PetalWidthCm', 'Species')
     )
 
     x = df.drop('Species', axis=1)
     y = df.Species
 
     # treinando o modelo
-    x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.7, random_state=101)
+    x_train, x_teste, y_train, y_teste = train_test_split(
+        x, y, test_size=0.7, random_state=101)
     lm = LogisticRegression(solver="lbfgs", multi_class="multinomial")
     lm.fit(x_train, y_train)
 
@@ -51,13 +55,12 @@ def mod_regressao_logistica(lst):
     predicao = lm.predict(lst_predict)
     prob = lm.predict_proba(lst_predict).round(2).max() * 100
 
-
     return [predicao[0], prob]
 
 
 def mod_regressao_linear(lst):
     lst_colunas = ['open', 'max', 'min', 'volume', 'close']  # close
-    lst_predict = convert_list_to_dataframe(lst,lst_colunas)
+    lst_predict = convert_list_to_dataframe(lst, lst_colunas)
 
     # dados da base de dados
     data = Acoes.objects.all()
@@ -68,7 +71,8 @@ def mod_regressao_linear(lst):
     x = df.drop('close', axis=1)
     y = df.close
 
-    x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.4, random_state=101)
+    x_train, x_teste, y_train, y_teste = train_test_split(
+        x, y, test_size=0.4, random_state=101)
 
     lm = LinearRegression()
     lm.fit(x_train, y_train)
@@ -81,7 +85,7 @@ def mod_regressao_linear(lst):
     # print('MAE:', metrics.mean_absolute_error(y_teste, predicao))
     # print('MSE:', metrics.mean_squared_error(y_teste, predicao))
     # print('RMSE:', np.sqrt(metrics.mean_squared_error(y_teste, predicao)))
-    return [round(predicao[0],2), 10]
+    return [round(predicao[0], 2), 10]
 
 
 class LogisticIris(CreateView):
@@ -98,10 +102,12 @@ class LogisticIris(CreateView):
 
     def post(self, request, *args, **kwargs):
         context = {'form': self.form_class(),
-                   'title': self.__title}
+                   'title': self.__title,
+                   'event': False}
         form = IrisForm(request.POST or None)
         if form.is_valid():
-            lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
+            lst = [float(str(n).replace(',', '.'))
+                   for n in form.cleaned_data.values()]
             context['predict'], context['prob'] = mod_regressao_logistica(lst)
 
         return render(request, self.template_name, context)
@@ -109,16 +115,17 @@ class LogisticIris(CreateView):
 
 class ListaIris(View):
     template_name = 'table.html'
-    titulo = ['Comprimento da Sépala', 'Largura da Sépala', 'Comprimento da Petula', 'Largura da Petula', 'Espécie']
+    __title = ['Comprimento da Sépala', 'Largura da Sépala',
+              'Comprimento da Petula', 'Largura da Petula', 'Espécie']
 
     def get(self, request):
         iris = Iris.objects.select_related().values('id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm',
                                                     'PetalWidthCm', 'Species')
-        context = {'objects': iris, 'campos': self.titulo}
+        context = {'objects': iris, 'campos': self.__title}
         return render(request, self.template_name, context)
 
 
-## regressão linear
+# regressão linear
 class LinearAcoes(CreateView):
     __title = '| Regressão Linear'
     template_name = 'new_edit.html'
@@ -136,7 +143,8 @@ class LinearAcoes(CreateView):
                    'title': self.__title}
         form = AcoesForm(request.POST or None)
         if form.is_valid():
-            lst = [float(str(n).replace(',', '.')) for n in form.cleaned_data.values()]
+            lst = [float(str(n).replace(',', '.'))
+                   for n in form.cleaned_data.values()]
             context['predict'], context['prob'] = mod_regressao_linear(lst)
 
         return render(request, self.template_name, context)
@@ -144,12 +152,12 @@ class LinearAcoes(CreateView):
 
 class ListaAcoes(View):
     template_name = 'table.html'
-    titulo = ['data', 'open', 'max', 'min', 'close', 'adj_close', 'volume']
+    __title = ['data', 'open', 'max', 'min', 'close', 'adj_close', 'volume']
 
     def get(self, request):
         acoes = Acoes.objects.select_related().values('id', 'data', 'open', 'max', 'min', 'close', 'adj_close',
                                                       'volume')
-        context = {'objects': acoes, 'campos': self.titulo}
+        context = {'objects': acoes, 'campos': self.__title}
         return render(request, self.template_name, context)
 
 
@@ -169,10 +177,11 @@ class RecomendacaoFilme(CreateView):
 
 class ListaFilmes(View):
     template_name = 'table.html'
-    titulo = ['ano_lançamento', 'titulo_obra', 'genero', 'data_lançamento', 'distribuidora', 'publico_acumulado']
+    __title = ['ano_lançamento', 'titulo_obra', 'genero',
+              'data_lançamento', 'distribuidora', 'publico_acumulado']
 
     def get(self, request):
         filmes = Filmes.objects.select_related().values('id', 'ano_lançamento', 'titulo_obra', 'genero',
                                                         'data_lançamento', 'distribuidora', 'publico_acumulado')
-        context = {'objects': filmes, 'campos': self.titulo}
+        context = {'objects': filmes, 'campos': self.__title, 'event': True}
         return render(request, self.template_name, context)
