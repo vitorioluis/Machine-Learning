@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import cv2
-
 import NameFind
 from constantes import FACE_CASCADE
 
