@@ -183,7 +183,8 @@ class Bricka:
             pygame.draw.rect(self.screen, BLUE, self.paddle)
 
             # Draw ball
-            pygame.draw.circle(self.screen, WHITE, (self.ball.left + int(BALL_RADIUS), self.ball.top + int(BALL_RADIUS)), int(BALL_RADIUS))
+            pygame.draw.circle(self.screen, WHITE,
+                               (self.ball.left + int(BALL_RADIUS), self.ball.top + int(BALL_RADIUS)), int(BALL_RADIUS))
 
             self.show_stats()
 

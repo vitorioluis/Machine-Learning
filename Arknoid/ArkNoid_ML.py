@@ -8,8 +8,8 @@ from pygame.locals import *
 
 class ArkNoid_ML:
     def __init__(self):
-        pygame.init()
 
+        pygame.init()
         pygame.display.set_caption("Machine Learning - Luís Vitório")
 
         # Importação das imagens
@@ -28,8 +28,9 @@ class ArkNoid_ML:
         if pygame.font:
             self.font = pygame.font.Font(None, 25)
         else:
-            self.font = None
+            self.font = pygame.font.SysFont('Sans', 25)
 
+        self.__placar()
         self.constantes()
         self.__iniciar_jogo()
 
@@ -38,7 +39,7 @@ class ArkNoid_ML:
         Função com variáveis constantes utilizadas na classe
 
         """
-        self.__white = (255, 255, 255)
+        self.__verde = (100, 244, 158)
         self.__status_stop, self.status_play, self.status_pausa = 0, 1, 2
 
         # configurações da base
@@ -53,13 +54,11 @@ class ArkNoid_ML:
         self.__nave_diametro = 70
         self.__nave_area = self.__nave_diametro / 2
         self.__nave_max_x = self.__resolucao_tela[0] - self.__nave_diametro
-        self.__nave_max_y = self.__resolucao_tela[1] - \
-            self.__nave_diametro + 20
+        self.__nave_max_y = self.__resolucao_tela[1] - self.__nave_diametro + 20
 
         # posição inicial da nave
         self.__xpos = 310
         self.__ypos = self.__resolucao_tela[1]
-        self.__ml, self.__pontos_jogo = 0, 0
 
     def __iniciar_jogo(self):
         # time de velociade do jogo
@@ -68,20 +67,32 @@ class ArkNoid_ML:
         # incia o jogo com status stop para abrir a tela e não movimentar os objetos
         self.__status = self.__status_stop
 
+        self._speed_game = 50
+        self._fase = 1
+
         # exibe potuação na tela
+        self.__placar()
+        self.__pontos = [0, 0]
         self.__mostrar_pontuacao()
 
         # número de pixel que a imagem se moverá
         self.__lst_vel_nave = [5, -5]
 
-        # sorteio da posição dos objetos da tela
-        def sorteio(x, y): return random.randint(x, y)
-
         # inicia objetos na tela
         self.__base = pygame.Rect(
-            sorteio(0, 700), self.__base_max_x, self.__base_largura, self.__base_largura)
-        self.__nave = pygame.Rect(sorteio(0, 800), sorteio(
+            self.sorteio(0, 700), self.__base_max_x, self.__base_largura, self.__base_largura)
+        self.__nave = pygame.Rect(self.sorteio(0, 800), self.sorteio(
             0, 600), self.__nave_diametro, self.__nave_diametro)
+
+    def __placar(self):
+        # texto placar
+        self.__sprite = pygame.sprite.Sprite()
+        self.__sprite.image = self.__img_fundo
+        self.__sprite.rect = self.__img_fundo.get_rect()
+
+    # sorteio da posição dos objetos da tela
+    def sorteio(self, x, y):
+        return random.randint(x, y)
 
     def __movimentar_nave(self):
         """
@@ -95,25 +106,22 @@ class ArkNoid_ML:
 
         # esquerda recebe 0 e add negativo para movimentar para direita
         if self.__nave.left <= 0:  # esquerda - 4
-            # print('4', self.__nave.left, self.__nave.top)
             self.__nave.left = 0
             self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
 
         # direita recebe 0 e add
         elif self.__nave.left >= self.__nave_max_x:  # direita - 2
-            # print('2', self.__nave.left, self.__nave.top)
             self.__nave.left = self.__nave_max_x
             self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
 
         # top recebe 0 se valor de top for menor ou igual a 0
         if self.__nave.top < 0:  # top - 3
-            # print('3', self.__nave.left, self.__nave.top)
             self.__nave.top = 0
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
         elif self.__nave.top >= self.__nave_max_y:  # bottom - 1
-            # print('1', self.__nave.left, self.__nave.top)
             self.__nave.top = self.__nave_max_y
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
+            self.__pontos[0] += 1
 
     def __movimentar_base(self):
         """
@@ -135,18 +143,22 @@ class ArkNoid_ML:
             Verifica a colisão
         """
         if self.__nave.colliderect(self.__base):
-            p = self.__nave[0]
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
+            self.__pontos[1] += 1
             print(self.__base[0])
 
     def __mostrar_pontuacao(self):
         """
         Methodo responsável exibir pontuação
         """
-        if self.font:
-            f = "Jogo: " + str(self.__pontos_jogo) + " ML: " + str(self.__ml)
-            font_surface = self.font.render(f, False, self.__white)
-            self.__screen.blit(font_surface, (20, 5))
+        f = "Fase: {0}".format(str(self._fase))
+        f += ' Jogo {0} x {1} I.A '.format(str(self.__pontos[0]), str(self.__pontos[1]))
+        pygame.display.set_caption("Machine Learning - " + f)
+
+        if self.__pontos[1] == 10:
+            self.__pontos=[0,0]
+            self._speed_game += 50
+            self._fase += 1
 
     def main(self):
         """
@@ -161,7 +173,7 @@ class ArkNoid_ML:
                     sys.exit()
 
             # Seta valor inicial para velocidade do jogo
-            self.__time.tick(50)
+            self.__time.tick(self._speed_game)
 
             # Captura a tecla precionada
             self.__tecla = pygame.key.get_pressed()
@@ -170,25 +182,21 @@ class ArkNoid_ML:
             # o break interrompe o while finalizando o jogo ao teclar o esc
             if self.__tecla[K_ESCAPE]:
                 break
-            #
-            # if self.__status == self.__status_stop:
-            #     self.__nave.left = self.__base.left + self.__base.width / 2
-            #     self.__nave.top =  self.__nave.height
 
             # se o status for igual a 1 e a tecla enter precionada inicia os movimentos da tela
             if self.__tecla[K_RETURN] or self.__status == self.status_play:
                 self.__movimentar_nave()
                 self.__colisoes()
                 self.__status = self.status_play
+                self.__mostrar_pontuacao()
 
             # atualizando img de fundo
             self.__screen.blit(self.__img_fundo, (0, 0))
 
             # movendo a imagens
-            self.__nave = self.__screen.blit(
-                self.__img_nave, (self.__nave.left, self.__nave.top))
-            self.__base = self.__screen.blit(
-                self.__img_base, (self.__base.left, self.__resolucao_tela[1] - 30))
+            self.__nave = self.__screen.blit(self.__img_nave, (self.__nave.left, self.__nave.top))
+            self.__base = self.__screen.blit(self.__img_base,
+                                             (self.__base.left, self.__resolucao_tela[1] - 30))
 
             # atualiza a tela
             pygame.display.flip()
