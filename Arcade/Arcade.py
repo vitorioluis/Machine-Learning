@@ -73,7 +73,7 @@ class Arcade:
 
         # inicia objetos na tela
         self.__base = pygame.Rect(self.sorteio(0, 700), _BASE_MAX_X, _BASE_LARGURA, _BASE_LARGURA)
-        self.__nave = pygame.Rect(self.sorteio(0, 800), self.sorteio(0, 600), _NAVE_DIAMETRO, _NAVE_DIAMETRO)
+        self.__nave = pygame.Rect(self.sorteio(0, 800), self.sorteio(0, 500), _NAVE_DIAMETRO, _NAVE_DIAMETRO)
 
     # def __placar(self):
     #     # texto placar
