@@ -54,6 +54,8 @@ class Arcade:
 
         self.__iniciar_jogo()
 
+        self.lst_pos_nave = [0, 0, 0, 0]  # direita, esquerda, cima, baixo
+
     def __iniciar_jogo(self):
         # time de velociade do jogo
         self.__time = pygame.time.Clock()
@@ -61,8 +63,12 @@ class Arcade:
         # incia o jogo com status stop para abrir a tela e não movimentar os objetos
         self.__status_jogo = _STATUS_STOP
 
+        # velocidade e fase inicial
         self._speed_game = 50
         self._fase = 1
+
+        # posição
+        self.lst_pos_nave = [0, 0, 0, 0]  # direita, esquerda, cima, baixo
 
         # exibe potuação na tela
         self.__pontos = [0, 0]
@@ -94,10 +100,14 @@ class Arcade:
         self.__nave.left += self.__lst_vel_nave[0]
         self.__nave.top += self.__lst_vel_nave[1]
 
+        self.lst_pos_nave[0] = self.__nave.left  # direita, esquerda, cima, baixo
+        self.lst_pos_nave[1] = self.__nave.top
+
         # esquerda recebe 0 e add negativo para movimentar para direita
         if self.__nave.left <= 0:  # esquerda - 4
             self.__nave.left = 0
             self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
+
 
         # direita recebe 0 e add
         elif self.__nave.left >= _NAVE_MAX_X:  # direita - 2
@@ -108,21 +118,29 @@ class Arcade:
         if self.__nave.top < 0:  # top - 3
             self.__nave.top = 0
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
+
+
         elif self.__nave.top >= _NAVE_MAX_Y:  # bottom - 1
             self.__nave.top = _NAVE_MAX_Y
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
             self.__pontos[0] += 1
 
+        # print(self.lst_pos_nave)
+
     def __movimentar_base(self):
         """
             Movimenta a base
         """
+        # self.__base.left = self.__nave.left
+
         __menos, __mais = 5, 5
+        # movimenta direita
         if self.__tecla[K_LEFT]:
             self.__base.left -= __mais
             if self.__base.left < 0:
                 self.__base.left = 0
 
+        # movimenta esquerda
         if self.__tecla[K_RIGHT]:
             self.__base.left += __menos
             if self.__base.left > _BASE_MAX_X:
@@ -135,7 +153,8 @@ class Arcade:
         if self.__nave.colliderect(self.__base):
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
             self.__pontos[1] += 1
-            print(self.__base[0])
+            # print(self.__base[0])
+            print(self.__nave, self.__base)
 
     def __mostrar_pontuacao(self):
         """
@@ -149,6 +168,7 @@ class Arcade:
             self.__pontos = [0, 0]
             self._speed_game += 50
             self._fase += 1
+
 
     def run(self):
         """
@@ -166,7 +186,6 @@ class Arcade:
 
             # Captura a tecla precionada
             self.__tecla = pygame.key.get_pressed()
-            self.__movimentar_base()
 
             # o break interrompe o while finalizando o jogo ao teclar o esc
             if self.__tecla[K_ESCAPE]:
@@ -175,6 +194,7 @@ class Arcade:
             # se o status for igual a 1 e a tecla enter precionada inicia os movimentos da tela
             if self.__tecla[K_RETURN] or self.__status_jogo == _STATUS_PLAY:
                 self.__movimentar_nave()
+                self.__movimentar_base()
                 self.__colisoes()
                 self.__status_jogo = _STATUS_PLAY
                 self.__mostrar_pontuacao()
@@ -188,6 +208,9 @@ class Arcade:
 
             # atualiza a tela
             pygame.display.flip()
+
+            # testes
+
 
 
 if __name__ == "__main__":
