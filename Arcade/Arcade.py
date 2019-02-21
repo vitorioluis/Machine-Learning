@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import random
 import sys
 
@@ -20,13 +21,16 @@ _NAVE_MAX_X = _RESOLUCAO_TELA[0] - _NAVE_DIAMETRO
 _NAVE_MAX_Y = _RESOLUCAO_TELA[1] - _NAVE_DIAMETRO + 20
 
 
-class ArkNoid_ML:
+class Arcade:
     def __init__(self):
+
+        # centraliza janela
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
 
         pygame.init()
         pygame.display.set_caption("Machine Learning - Luís Vitório")
 
-        # Importação das imagens
+        # imagens
         self.__img_nave = pygame.image.load('img/nave.png')
         self.__img_base = pygame.image.load('img/base.png')
         self.__img_fundo = pygame.image.load('img/fundo_800_600.jpg')
@@ -42,7 +46,12 @@ class ArkNoid_ML:
         else:
             self.font = pygame.font.SysFont('Sans', 25)
 
-        self.__placar()
+        # verifica se existe o diretório caso contrário cria
+        # diretório para a base com os dados de aprendizado
+        self.__dir_dataset = 'dataset'
+        if os.path.exists(self.__dir_dataset) is False:
+            os.mkdir(self.__dir_dataset)
+
         self.__iniciar_jogo()
 
     def __iniciar_jogo(self):
@@ -142,7 +151,7 @@ class ArkNoid_ML:
             self._speed_game += 50
             self._fase += 1
 
-    def main(self):
+    def run(self):
         """
             função que principal onde incia o jogo
         """
@@ -183,5 +192,5 @@ class ArkNoid_ML:
 
 
 if __name__ == "__main__":
-    gm = ArkNoid_ML()
-    gm.main()
+    gm = Arcade()
+    gm.run()
