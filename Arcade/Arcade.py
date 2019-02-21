@@ -8,7 +8,7 @@ from pygame.locals import *
 
 _RESOLUCAO_TELA = 800, 600
 
-_VERDE = (100, 244, 158)
+# _VERDE = (100, 244, 158)
 _STATUS_STOP, _STATUS_PLAY = 0, 1
 
 # configurações da base
@@ -71,19 +71,18 @@ class Arcade:
         # número de pixel que a imagem se moverá
         self.__lst_vel_nave = [5, -5]
 
+        # sorteio da posição dos objetos da tela
+        sorteio = lambda x, y: random.randint(x, y)
+
         # inicia objetos na tela
-        self.__base = pygame.Rect(self.sorteio(0, 700), _BASE_MAX_X, _BASE_LARGURA, _BASE_LARGURA)
-        self.__nave = pygame.Rect(self.sorteio(0, 800), self.sorteio(0, 500), _NAVE_DIAMETRO, _NAVE_DIAMETRO)
+        self.__base = pygame.Rect(sorteio(0, 700), _BASE_MAX_X, _BASE_LARGURA, _BASE_LARGURA)
+        self.__nave = pygame.Rect(sorteio(0, 800), sorteio(0, 500), _NAVE_DIAMETRO, _NAVE_DIAMETRO)
 
     # def __placar(self):
     #     # texto placar
     #     self.__sprite = pygame.sprite.Sprite()
     #     self.__sprite.image = self.__img_fundo
     #     self.__sprite.rect = self.__img_fundo.get_rect()
-
-    # sorteio da posição dos objetos da tela
-    def sorteio(self, x, y):
-        return random.randint(x, y)
 
     def __movimentar_nave(self):
         """
