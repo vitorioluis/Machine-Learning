@@ -105,22 +105,21 @@ class Arcade:
 
         # esquerda recebe 0 e add negativo para movimentar para direita
         if self.__nave.left <= 0:  # esquerda - 4
+            print("esqueda",self.__nave.left)
             self.__nave.left = 0
             self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
-
-
-        # direita recebe 0 e add
         elif self.__nave.left >= _NAVE_MAX_X:  # direita - 2
+            print("direita",self.__nave.left)
             self.__nave.left = _NAVE_MAX_X
             self.__lst_vel_nave[0] = -self.__lst_vel_nave[0]
 
         # top recebe 0 se valor de top for menor ou igual a 0
-        if self.__nave.top < 0:  # top - 3
+        if self.__nave.top <= 0:  # top - 3
+            print("cima",self.__nave.top)
             self.__nave.top = 0
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
-
-
         elif self.__nave.top >= _NAVE_MAX_Y:  # bottom - 1
+            print("baixo",self.__nave.top)
             self.__nave.top = _NAVE_MAX_Y
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
             self.__pontos[0] += 1
@@ -154,7 +153,6 @@ class Arcade:
             self.__lst_vel_nave[1] = -self.__lst_vel_nave[1]
             self.__pontos[1] += 1
             # print(self.__base[0])
-            print(self.__nave, self.__base)
 
     def __mostrar_pontuacao(self):
         """
@@ -168,7 +166,6 @@ class Arcade:
             self.__pontos = [0, 0]
             self._speed_game += 50
             self._fase += 1
-
 
     def run(self):
         """
@@ -210,7 +207,6 @@ class Arcade:
             pygame.display.flip()
 
             # testes
-
 
 
 if __name__ == "__main__":

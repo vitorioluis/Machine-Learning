@@ -9,6 +9,7 @@ from constantes import FACE_CASCADE
 
 
 def reconecimento_facial_video(modelo, tp):
+
     title = 'Reconhecimento Facial openCV - ' + tp
     cap = cv2.VideoCapture(0)
     # cap = cv2.VideoCapture('TestVid.wmv')
@@ -36,6 +37,7 @@ def reconecimento_facial_video(modelo, tp):
 
 
 if __name__ == "__main__":
+
     while True:
         print('-- Modelos de reconhecimento facial disponíveis --')
 

@@ -5,6 +5,7 @@ import cv2
 WHITE = (255, 255, 255)
 COR_FACE = (0, 255, 0)
 COR_EYE = (255, 0, 0)
+CODING = 'utf-8'
 
 # obter os cascades em => https://github.com/opencv/opencv/tree/master/data/haarcascades
 FACE_CASCADE = cv2.CascadeClassifier('dados/cascade/haarcascade_frontalface_default.xml')
