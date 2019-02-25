@@ -34,7 +34,7 @@ def captura_fotos_novo_reconhecimento_facial():
                     frame = gray[y: y + h, x: x + w]
                 cv2.imwrite("dados/fotos/" + str(id_name) + "." + str(count) + ".jpg", frame)
                 cv2.waitKey(300)
-                cv2.imshow(str(count), frame)
+                cv2.imshow("#", frame)
                 count += 1
         cv2.imshow('Caputura de fotos', gray)
 
