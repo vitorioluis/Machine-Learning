@@ -144,7 +144,7 @@ class Arcade:
 
     def run(self):
         """
-            função que principal onde incia o jogo
+            função principal onde incia o jogo
         """
         while True:
             # pega eventos para finalizar a tela
