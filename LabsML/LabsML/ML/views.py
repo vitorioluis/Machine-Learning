@@ -1,4 +1,7 @@
 # -*- encoding:utf-8
+import pickle
+from os import path
+
 import numpy as np
 import pandas as pd
 from django.shortcuts import render
@@ -7,10 +10,11 @@ from django.views import View
 from django.views.generic import CreateView
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn import metrics
+from sklearn.metrics import mean_absolute_error
 
 from .forms import IrisForm, AcoesForm, FilmesForm
 from .models import Iris, Acoes, Filmes
+from django.conf import settings
 
 
 # metricas de avaliação do modelo
@@ -31,27 +35,32 @@ def mod_regressao_logistica(lst):
     """
     Machine Learning na pratica
     """
-    lst_colunas = ['SepalLengthCm', 'SepalWidthCm',
-                   'PetalLengthCm', 'PetalWidthCm', 'Species']
+    nome_modelo = path.join(settings.MODELOS,"modelo_iris_regresao_logistica.mod")
+
+    lst_colunas = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species']
     lst_predict = convert_list_to_dataframe(lst, lst_colunas)
 
-    # dados de iris obtido da base de dados
-    data = Iris.objects.all()
-    df = pd.DataFrame.from_records(
-        data.values('SepalLengthCm', 'SepalWidthCm',
-                    'PetalLengthCm', 'PetalWidthCm', 'Species')
-    )
+    if path.isfile(nome_modelo):
+        lm = pickle.load(open(nome_modelo, 'rb'))
+    else:
+        # Gera o modelo
+        data = Iris.objects.all()
+        df = pd.DataFrame.from_records(
+            data.values('SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species')
+        )
 
-    x = df.drop('Species', axis=1)
-    y = df.Species
+        x = df.drop('Species', axis=1)
+        y = df.Species
 
-    # treinando o modelo
-    x_train, x_teste, y_train, y_teste = train_test_split(
-        x, y, test_size=0.7, random_state=101)
-    lm = LogisticRegression(solver="lbfgs", multi_class="multinomial")
-    lm.fit(x_train, y_train)
+        # treinando o modelo
+        x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.33, random_state=101)
+        lm = LogisticRegression(solver="lbfgs", multi_class="multinomial")
+        lm.fit(x_train, y_train)
 
-    # predicao
+        #salva para futuras predições
+        pickle.dump(lm, open(nome_modelo, 'wb'))
+
+    # realiza a predição
     predicao = lm.predict(lst_predict)
     prob = lm.predict_proba(lst_predict).round(2).max() * 100
 
@@ -61,31 +70,37 @@ def mod_regressao_logistica(lst):
 def mod_regressao_linear(lst):
     lst_colunas = ['open', 'max', 'min', 'volume', 'close']  # close
     lst_predict = convert_list_to_dataframe(lst, lst_colunas)
+    nome_modelo = path.join(settings.MODELOS, "modelo_acoes_apple_regresao_linear.mod")
 
-    # dados da base de dados
-    data = Acoes.objects.all()
-    df = pd.DataFrame.from_records(
-        data.values('open', 'max', 'min', 'volume', 'close')
-    )
+    if path.isfile(nome_modelo):
+        lm = pickle.load(open(nome_modelo,'rb'))
+    else:
+        # dados da base de dados
+        data = Acoes.objects.all()
+        df = pd.DataFrame.from_records(
+            data.values('open', 'max', 'min', 'volume', 'close')
+        )
 
-    x = df.drop('close', axis=1)
-    y = df.close
+        x = df.drop('close', axis=1)
+        y = df.close
 
-    x_train, x_teste, y_train, y_teste = train_test_split(
-        x, y, test_size=0.4, random_state=101)
+        x_train, x_teste, y_train, y_teste = train_test_split(
+            x, y, test_size=0.4, random_state=101)
 
-    lm = LinearRegression()
-    lm.fit(x_train, y_train)
+        lm = LinearRegression()
+        lm.fit(x_train, y_train)
+
+        pickle.dump(lm, open(nome_modelo,'wb'))
 
     # predicao
     predicao = lm.predict(lst_predict)
     # prob = lm.predict_proba(st_predict).round(2), max() * 100
-    # prob = metrics.mean_absolute_error(y_teste, predicao)
+    # prob = mean_absolute_error(y_teste, predicao)
 
     # print('MAE:', metrics.mean_absolute_error(y_teste, predicao))
     # print('MSE:', metrics.mean_squared_error(y_teste, predicao))
     # print('RMSE:', np.sqrt(metrics.mean_squared_error(y_teste, predicao)))
-    return [round(predicao[0], 2), 10]
+    return [round(predicao[0], 2), '']
 
 
 class LogisticIris(CreateView):
@@ -116,7 +131,7 @@ class LogisticIris(CreateView):
 class ListaIris(View):
     template_name = 'table.html'
     __title = ['Comprimento da Sépala', 'Largura da Sépala',
-              'Comprimento da Petula', 'Largura da Petula', 'Espécie']
+               'Comprimento da Petula', 'Largura da Petula', 'Espécie']
 
     def get(self, request):
         iris = Iris.objects.select_related().values('id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm',
@@ -157,7 +172,7 @@ class ListaAcoes(View):
     def get(self, request):
         acoes = Acoes.objects.select_related().values('id', 'data', 'open', 'max', 'min', 'close', 'adj_close',
                                                       'volume')
-        context = {'objects': acoes, 'campos': self.__title}
+        context = {'objects': acoes[:100], 'campos': self.__title}
         return render(request, self.template_name, context)
 
 
@@ -178,7 +193,7 @@ class RecomendacaoFilme(CreateView):
 class ListaFilmes(View):
     template_name = 'table.html'
     __title = ['ano_lançamento', 'titulo_obra', 'genero',
-              'data_lançamento', 'distribuidora', 'publico_acumulado']
+               'data_lançamento', 'distribuidora', 'publico_acumulado']
 
     def get(self, request):
         filmes = Filmes.objects.select_related().values('id', 'ano_lançamento', 'titulo_obra', 'genero',

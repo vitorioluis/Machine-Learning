@@ -125,5 +125,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'LabsML/core', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'LabsML', 'media')
+MODELOS = os.path.join(BASE_DIR, 'LabsML', 'modelos')
 
 URL_RAIZ = 'http://127.0.0.1:8081/'
