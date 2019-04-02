@@ -1,0 +1,71 @@
+{% extends "base.html"%}
+{% load bootstrap3 %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block content %}
+
+<form action="" class="form-horizontal" enctype="multipart/form-data" method="post">
+    <div class="box-body">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+        <hr/>
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-primary" type="submit">Predict</button>
+                <a class="btn btn-default" href="{% url 'core:home' %}">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
+
+{% block modal %}
+{% if predict %}
+
+<div class="modal fade" id="modalpredict" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="gridSystemModalLabel"> Resultado </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Probabilidade de acerto = {{ prob }}%</p>
+                <p>Predição = {{ predict }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--&lt;!&ndash; jquery &ndash;&gt;-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+{% block script %}
+<!-- chamada da função -->
+<script type="text/javascript">
+
+ jQuery.noConflict();
+(function( $ ) {
+  $(function() {
+    $('#modalpredict').modal('show');
+  });
+})(jQuery);
+
+
+</script>
+{% endblock %}
+{% endif %}
+
+
+{% endblock %}
+
+

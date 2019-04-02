@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<section class="content">
+
+    <div class="row">
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-6">
+                        <h3 class="panel-title"></h3>
+                    </div>
+
+                </div>
+            </div>
+            
+            {% if event %}
+            <div id="events">
+                
+            </div>
+            {% endif %}
+            
+
+            <div class="box-body">
+                <table id="table_padrao" class="table table-striped table-bordered" style="width:100%">
+
+
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        {% for c in campos %}
+
+                        <th>{{ c }}</th>
+
+                        {% endfor %}
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    {% for query in objects %}
+                    <tr>
+                        {% for x in query.values %}
+                        <td>{{ x }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        {% for c in campos %}
+                        <th>{{ c }}</th>
+                        {% endfor %}
+                    </tr>
+                    </tfoot>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
