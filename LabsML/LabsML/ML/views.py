@@ -4,17 +4,16 @@ from os import path
 
 import numpy as np
 import pandas as pd
+from django.conf import settings
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
 
 from .forms import IrisForm, AcoesForm, FilmesForm
 from .models import Iris, Acoes, Filmes
-from django.conf import settings
 
 
 # metricas de avaliação do modelo
@@ -35,7 +34,7 @@ def mod_regressao_logistica(lst):
     """
     Machine Learning na pratica
     """
-    nome_modelo = path.join(settings.MODELOS,"modelo_iris_regresao_logistica.mod")
+    nome_modelo = path.join(settings.MODELOS, "modelo_iris_regresao_logistica.mod")
 
     lst_colunas = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species']
     lst_predict = convert_list_to_dataframe(lst, lst_colunas)
@@ -53,11 +52,11 @@ def mod_regressao_logistica(lst):
         y = df.Species
 
         # treinando o modelo
-        x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.33, random_state=101)
+        x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.33)
         lm = LogisticRegression(solver="lbfgs", multi_class="multinomial")
         lm.fit(x_train, y_train)
 
-        #salva para futuras predições
+        # salva para futuras predições
         pickle.dump(lm, open(nome_modelo, 'wb'))
 
     # realiza a predição
@@ -73,39 +72,31 @@ def mod_regressao_linear(lst):
     nome_modelo = path.join(settings.MODELOS, "modelo_acoes_apple_regresao_linear.mod")
 
     if path.isfile(nome_modelo):
-        lm = pickle.load(open(nome_modelo,'rb'))
+        lm = pickle.load(open(nome_modelo, 'rb'))
     else:
         # dados da base de dados
         data = Acoes.objects.all()
-        df = pd.DataFrame.from_records(
-            data.values('open', 'max', 'min', 'volume', 'close')
-        )
+        df = pd.DataFrame.from_records(data.values('open', 'max', 'min', 'volume', 'close'))
 
         x = df.drop('close', axis=1)
         y = df.close
 
-        x_train, x_teste, y_train, y_teste = train_test_split(
-            x, y, test_size=0.4, random_state=101)
+        x_train, x_teste, y_train, y_teste = train_test_split(x, y, test_size=0.33)
 
         lm = LinearRegression()
         lm.fit(x_train, y_train)
 
-        pickle.dump(lm, open(nome_modelo,'wb'))
+        pickle.dump(lm, open(nome_modelo, 'wb'))
 
     # predicao
     predicao = lm.predict(lst_predict)
-    # prob = lm.predict_proba(st_predict).round(2), max() * 100
-    # prob = mean_absolute_error(y_teste, predicao)
 
-    # print('MAE:', metrics.mean_absolute_error(y_teste, predicao))
-    # print('MSE:', metrics.mean_squared_error(y_teste, predicao))
-    # print('RMSE:', np.sqrt(metrics.mean_squared_error(y_teste, predicao)))
-    return [round(predicao[0], 2), '']
+    return 'Valor Predito: %.2f' % (predicao[0])
 
 
 class LogisticIris(CreateView):
     __title = '| Regressão Logistica'
-    template_name = 'new_edit.html'
+    template_name = 'form_new_edit.html'
     models = Iris
     form_class = IrisForm
     success_url = reverse_lazy('core:home')
@@ -143,7 +134,7 @@ class ListaIris(View):
 # regressão linear
 class LinearAcoes(CreateView):
     __title = '| Regressão Linear'
-    template_name = 'new_edit.html'
+    template_name = 'form_new_edit.html'
     models = Acoes
     form_class = AcoesForm
     success_url = reverse_lazy('core:home')
@@ -160,7 +151,7 @@ class LinearAcoes(CreateView):
         if form.is_valid():
             lst = [float(str(n).replace(',', '.'))
                    for n in form.cleaned_data.values()]
-            context['predict'], context['prob'] = mod_regressao_linear(lst)
+            context['predict'] = mod_regressao_linear(lst)
 
         return render(request, self.template_name, context)
 
@@ -179,7 +170,7 @@ class ListaAcoes(View):
 # sistema de recomendações de filme
 class RecomendacaoFilme(CreateView):
     __title = '| Sistema de Recomendação'
-    template_name = 'new_edit.html'
+    template_name = 'form_new_edit.html'
     models = Filmes
     form_class = FilmesForm
     success_url = reverse_lazy('core:home')

@@ -1,0 +1,32 @@
+{% extends "base.html"%}
+{% load bootstrap3 %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block content %}
+
+{% if predict %}
+<div class="alert alert-primary" role="alert">
+    <p>{{ predict }}</p>
+</div>
+{% endif %}
+
+<form action="" class="form-horizontal" enctype="multipart/form-data" method="post">
+    <div class="box-body">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+        <hr/>
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-primary" type="submit">Predict</button>
+                <a class="btn btn-default" href="{% url 'core:home' %}">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}
+
+
