@@ -3,17 +3,15 @@ import os
 import random
 import sys
 
-
 import pygame
 from pygame.locals import *
 
 _RESOLUCAO_TELA = 800, 600
-
-# _VERDE = (100, 244, 158)
 _STATUS_PAUSE, _STATUS_PLAY = 0, 1
 
 # configurações da base
 _BASE_LARGURA = 100
+_BASE_MAX_Y = _RESOLUCAO_TELA[1] - 30
 _BASE_MAX_X = _RESOLUCAO_TELA[0] - _BASE_LARGURA
 
 # configurações da nave
@@ -53,6 +51,8 @@ class Arcade:
         if os.path.exists(self.__dir_dataset) is False:
             os.mkdir(self.__dir_dataset)
 
+        self._txt_dados_salvos = os.path.join(self.__dir_dataset, 'dados.txt')
+
         self.__iniciar_jogo()
 
     def __iniciar_jogo(self):
@@ -74,7 +74,10 @@ class Arcade:
         self.__mostrar_pontuacao()
 
         # número de pixel que a imagem se moverá
-        self.__lst_speed = 5
+        self.__lst_speed = [5, -5]
+
+        # Coleta dados do jogo
+        self._dic={}
 
         # inicia objetos na tela
         self.__base = pygame.Rect(Arcade.__sorteio(), _BASE_MAX_X, _BASE_LARGURA, _BASE_LARGURA)
@@ -89,24 +92,19 @@ class Arcade:
         """
             Movimenta a base
         """
-        __menos, __mais = self.__lst_speed, self.__lst_speed
+        # self.__base.left = self.__nave.left
 
         # movimenta direita
         if self.__tecla[K_LEFT]:
-            self.__base.left -= __mais
+            self.__base.left -= 5
             if self.__base.left < 0:
                 self.__base.left = 0
 
         # movimenta esquerda
         if self.__tecla[K_RIGHT]:
-            self.__base.left += __menos
+            self.__base.left += 5
             if self.__base.left > _BASE_MAX_X:
                 self.__base.left = _BASE_MAX_X
-
-    def __nova_nave(self):
-        self.__nave.top = 0
-        self.__nave.left = self.__sorteio()
-
 
     def __movimentar_nave(self):
         """
@@ -114,12 +112,22 @@ class Arcade:
             o Machine Learning além de determinar limites para a nave
         """
 
-        self.__nave.top += self.__lst_speed
+        self.__nave.left += self.__lst_speed[0]
+        self.__nave.top += self.__lst_speed[1]
 
-        if self.__nave.top >= _NAVE_MAX_Y:
-            self.__pontos[0] += 1
-            self.__nova_nave()
+        if self.__nave.left <= 0:
+            self.__nave.left = 0
+            self.__lst_speed[0] = -self.__lst_speed[0]
+        elif self.__nave.left >= _NAVE_MAX_X:
+            self.__nave.left = _NAVE_MAX_X
+            self.__lst_speed[0] = -self.__lst_speed[0]
 
+        if self.__nave.top < 0:
+            self.__nave.top = 0
+            self.__lst_speed[1] = -self.__lst_speed[1]
+        elif self.__nave.top >= _NAVE_MAX_Y:
+            self.__nave.top = _NAVE_MAX_Y
+            self.__lst_speed[1] = -self.__lst_speed[1]
 
     def __colisoes(self):
         """
@@ -128,7 +136,8 @@ class Arcade:
 
         if self.__nave.colliderect(self.__base):
             self.__pontos[1] += 1
-            self.__nova_nave()
+            self.__lst_speed[1] = -self.__lst_speed[1]
+            self._dic[len(self._dic)+1]=[self.__nave.top, self.__nave.left, self.__base.left]
 
     def __mostrar_pontuacao(self):
         """
@@ -138,9 +147,16 @@ class Arcade:
         f += ' Jogo {0} x {1} I.A '.format(str(self.__pontos[0]), str(self.__pontos[1]))
         pygame.display.set_caption("Machine Learning - " + f)
 
-        if self.__pontos[1] == 10:
-            self.__pontos = [0, 0]
-            self._fase += 1
+        # if self.__pontos[1] == 10:
+        #     self.__pontos = [0, 0]
+        #     self._fase += 1
+
+    #salvar dados
+    def __salvar_dados_jogo(self):
+        with open(self._txt_dados_salvos, 'w+') as txt:
+            for i in self._dic.values():
+                txt.write(''.join(str(i).replace('[','').replace(']',''))+'\n')
+        del self._dic
 
     def run(self):
         """
@@ -161,6 +177,7 @@ class Arcade:
 
             # o break interrompe o while finalizando o jogo ao teclar o esc
             if self.__tecla[K_ESCAPE]:
+                self.__salvar_dados_jogo()
                 break
 
             if self.__tecla[K_SPACE]:
@@ -179,7 +196,7 @@ class Arcade:
 
             # movendo a imagens
             self.__nave = self.__screen.blit(self.__img_nave, (self.__nave.left, self.__nave.top))
-            self.__base = self.__screen.blit(self.__img_base, (self.__base.left, _RESOLUCAO_TELA[1] - 30))
+            self.__base = self.__screen.blit(self.__img_base, (self.__base.left, _BASE_MAX_Y))
 
             # atualiza a tela
             pygame.display.flip()

@@ -133,12 +133,12 @@ class Bricka:
             self.state = STATE_WON
 
         if self.ball.colliderect(self.paddle):
-            print(self.ball.left,self.ball.top, self.paddle.left, 1)
+            print(self.ball.left, self.ball.top, self.paddle.left, 1)
             self.ball.top = PADDLE_Y - BALL_DIAMETER
             self.ball_vel[1] = -self.ball_vel[1]
         elif self.ball.top > self.paddle.top:
             self.lives -= 1
-            print(self.ball.left,self.ball.top, self.paddle.left, 0)
+            # print(self.ball.left,self.ball.top, self.paddle.left, 0)
             #if self.lives > 0:
             #    self.state = STATE_BALL_IN_PADDLE
             #else:
