@@ -17,7 +17,7 @@ import numpy as np
 
 
 # Classe Network
-class Network(object):
+class Network:
 
     def __init__(self, sizes):
         """A lista `sizes` contém o número de neurônios nas
