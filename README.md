@@ -16,16 +16,6 @@ quando ocorrem e como podemos preveni-los a fim de tornar nosso trânsito mais s
 Neste projeto realizo uma análise detalhada dos gatos de nossos deputados.
 
 
-### LabsML
-Neste projeto vamos executar alguns modelos de Machine Learning direto do navegador. 
-Este projeto é construindo em Django/Python.
-
-* Regressão Logisca - Implementado
-* Regressão Linear - Implementado
-* Sistema de recomendação - Em construção
-* Analise de sentimentos - Em construção
-
-
 ### Reconhecimento Facial
 Neste projeto utilizo a lib opencv e implemento 3 modelos de reconhecimento preditivo facial.
 * EIGEN
