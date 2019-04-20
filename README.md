@@ -1,10 +1,8 @@
 # Machine Learning/Aprendizado de Maquina
 #### É uma área da Inteligência Artificial onde a máquina pode aprender utilizando dados, com isso identifica padrões e assim pode tomar decisões sem intervenção humana. Basicamente um programa de computador que é “treinado”, ou seja, aprende por experiência.	
 
-# Deep Learning
-Definição de Redes Neurais:
- - Redes Neurais são técnicas computacionais que apresentam modelos matemáticos inspirados na estrutura neuronal de organismos inteligentes, que adquire conhecimentos através da experiência. 
- - Vou mostrar algumas técnicas de rede neural e aplicação delas na vida real.
+### Deep Learning
+Vou mostrar algumas técnicas de rede neural e aplicação delas na vida real.
 
 ### Arcade 
 Em construção.
