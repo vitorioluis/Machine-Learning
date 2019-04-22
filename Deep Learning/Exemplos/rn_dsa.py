@@ -90,10 +90,10 @@ class Network:
                        nb in zip(self.biases, nabla_b)]
 
     def backprop(self, x, y):
-        """Retorna uma tupla `(nabla_b, nabla_w)` representando o
-                  gradiente para a função de custo C_x. `nabla_b` e
-                  `nabla_w` são listas de camadas de matrizes numpy, semelhantes
-                  a `self.biases` e `self.weights`."""
+        """
+        Retorna uma tupla `(nabla_b, nabla_w)` representando o gradiente para a função de custo C_x.
+        `nabla_b` e `nabla_w` são listas de camadas de matrizes numpy, semelhantes a `self.biases` e `self.weights`.
+        """
 
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
