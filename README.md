@@ -4,10 +4,6 @@
 ### Deep Learning
 Vou mostrar algumas técnicas de rede neural e aplicação delas na vida real.
 
-### Arcade 
-Em construção.
-"Jogo" com modelos preditivos de machine learning implementado.
-
 
 ### Análise de acidentes de trânsitos
 Meu objetivo com essa análise é entender quais são os tipos de acidentes mais comuns, onde ocorrem com mais frequência, 

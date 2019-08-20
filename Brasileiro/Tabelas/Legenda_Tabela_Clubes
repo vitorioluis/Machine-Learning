@@ -1,0 +1,6 @@
+Legenda
+Posicao: Classificação final no campeonato braileiro daquele ano. 
+Saldo: Saldo de gols do time, gols feitos - gols sofridos.
+Estrangeiros: Quantidade de estrangeiros daquele time.
+Valor_Total: Soma dos preços dos jogadores de um time naquela temporada.
+Media_Valor: Media dos preços dos jogadores de um time naquela temporada. Valor_Total/Qtd_Jogadores.
