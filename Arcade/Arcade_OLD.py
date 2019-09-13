@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Código original e documentações:
+http://codentronix.com/2011/04/14/game-programming-with-python-and-pygame-making-breakout/
+"""
 import os
 import random
 import sys
@@ -106,7 +110,6 @@ class Arcade:
         self.__nave.top = 0
         self.__nave.left = self.__sorteio()
 
-
     def __movimentar_nave(self):
         """
             Função para movimentar a nave automaticamente e colher dados para
@@ -118,7 +121,6 @@ class Arcade:
         if self.__nave.top >= _NAVE_MAX_Y:
             self.__pontos[0] += 1
             self.__nova_nave()
-
 
     def __colisoes(self):
         """

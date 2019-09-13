@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Código original e documentações:
+http://codentronix.com/2011/04/14/game-programming-with-python-and-pygame-making-breakout/
+"""
 import os
 import random
 import sys
@@ -18,6 +22,8 @@ _BASE_MAX_X = _RESOLUCAO_TELA[0] - _BASE_LARGURA
 _NAVE_DIAMETRO = 70
 _NAVE_MAX_X = _RESOLUCAO_TELA[0] - _NAVE_DIAMETRO
 _NAVE_MAX_Y = _RESOLUCAO_TELA[1] - _NAVE_DIAMETRO + 20
+
+BRICK_WIDTH, BRICK_HEIGHT, BRICK_COLOR = 60, 15, (200, 200, 0)
 
 
 class Arcade:
@@ -77,15 +83,29 @@ class Arcade:
         self.__lst_speed = [5, -5]
 
         # Coleta dados do jogo
-        self._dic={}
+        self._dic = {}
 
         # inicia objetos na tela
         self.__base = pygame.Rect(Arcade.__sorteio(), _BASE_MAX_X, _BASE_LARGURA, _BASE_LARGURA)
         self.__nave = pygame.Rect(Arcade.__sorteio(), 0, _NAVE_DIAMETRO, _NAVE_DIAMETRO)
+        # self.criar_tijolos_aleatorios()
 
-    # sorteio da posição dos objetos da tela
+    def criar_tijolos_aleatorios(self):
+        self.bricks = []
+        qtd_tijolos = random.randint(2, 5)
+        for i in range(qtd_tijolos):
+            x_ofs, y_ofs = random.randint(35, 100), random.randint(35, 500)
+            self.bricks.append((x_ofs, y_ofs))
+
+        for brick in self.bricks:
+            print(brick)
+            self.__screen.blit(self.__img_base, brick)
+
     @staticmethod
     def __sorteio(x=0, y=700):
+        '''
+         sorteio da posição dos objetos da tela
+        '''
         return random.randint(x, y)
 
     def __movimentar_base(self):
@@ -128,16 +148,16 @@ class Arcade:
         elif self.__nave.top >= _NAVE_MAX_Y:
             self.__nave.top = _NAVE_MAX_Y
             self.__lst_speed[1] = -self.__lst_speed[1]
+        # print(self.__nave.top, self.__nave.left)
 
     def __colisoes(self):
         """
-            Verifica a colisão
+            Verifica a colisão com a base
         """
 
         if self.__nave.colliderect(self.__base):
             self.__pontos[1] += 1
             self.__lst_speed[1] = -self.__lst_speed[1]
-            self._dic[len(self._dic)+1]=[self.__nave.top, self.__nave.left, self.__base.left]
 
     def __mostrar_pontuacao(self):
         """
@@ -151,17 +171,19 @@ class Arcade:
         #     self.__pontos = [0, 0]
         #     self._fase += 1
 
-    #salvar dados
+    # salvar dados
     def __salvar_dados_jogo(self):
         with open(self._txt_dados_salvos, 'w+') as txt:
-            for i in self._dic.values():
-                txt.write(''.join(str(i).replace('[','').replace(']',''))+'\n')
+            for lst in self._dic.values():
+                txt.write(''.join(str(lst).replace('[', '').replace(']', '')) + '\n' )
         del self._dic
 
     def run(self):
         """
             função principal onde incia o jogo
         """
+        left, rigth = 0, 0
+        top, botton = 0, 0
         while True:
             # pega eventos para finalizar a tela
             for event in pygame.event.get():
@@ -200,6 +222,17 @@ class Arcade:
 
             # atualiza a tela
             pygame.display.flip()
+
+            # dados para machine learning
+
+            left = self.__nave.left if self.__nave.left > _RESOLUCAO_TELA[0] / 2 else left
+            rigth = self.__nave.left if self.__nave.left < _RESOLUCAO_TELA[0] / 2 else rigth
+
+            top = self.__nave.top if self.__nave.top < _RESOLUCAO_TELA[1] / 2 else top
+            botton = self.__nave.top if self.__nave.top > _RESOLUCAO_TELA[1] / 2 else botton
+
+            if botton >= 500:
+                self._dic[len(self._dic) + 1] = [left, rigth, top, botton]
 
 
 if __name__ == "__main__":

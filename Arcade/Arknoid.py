@@ -1,11 +1,13 @@
+# -*- coding:utf-8 -*-
 """
  bricka (a breakout clone)
  Developed by Leonel Machava <leonelmachava@gmail.com>
 
- http://codeNtronix.com
+Código original e documentações:
+http://codentronix.com/2011/04/14/game-programming-with-python-and-pygame-making-breakout/
+
 """
 import sys
-
 import pygame
 
 SCREEN_SIZE = 640, 480
@@ -133,16 +135,19 @@ class Bricka:
             self.state = STATE_WON
 
         if self.ball.colliderect(self.paddle):
-            print(self.ball.left, self.ball.top, self.paddle.left, 1)
             self.ball.top = PADDLE_Y - BALL_DIAMETER
             self.ball_vel[1] = -self.ball_vel[1]
         elif self.ball.top > self.paddle.top:
             self.lives -= 1
+            # print(self.ball.left, self.ball.right ,self.ball.top, self.ball.bottom)
             # print(self.ball.left,self.ball.top, self.paddle.left, 0)
-            #if self.lives > 0:
+            # if self.lives > 0:
             #    self.state = STATE_BALL_IN_PADDLE
-            #else:
-             #   self.state = STATE_GAME_OVER
+            # else:
+            #   self.state = STATE_GAME_OVER
+
+        if self.ball.bottom >= 300:
+            print('luis', self.ball.left, self.ball.right, self.ball.top, self.ball.bottom)
 
     def show_stats(self):
         if self.font:
@@ -184,7 +189,6 @@ class Bricka:
 
             # Draw paddle
             pygame.draw.rect(self.screen, BLUE, self.paddle)
-
 
             # Draw ball
             pygame.draw.circle(self.screen, WHITE,
