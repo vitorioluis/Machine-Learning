@@ -32,6 +32,7 @@ class Arcade:
         # centraliza janela
         os.environ['SDL_VIDEO_CENTERED'] = '1'
 
+        # inicia a tela
         pygame.init()
         pygame.display.set_caption("Machine Learning - Luís Vitório")
 
@@ -40,6 +41,7 @@ class Arcade:
         self.__img_base = pygame.image.load('img/base.png')
         self.__img_fundo = pygame.image.load('img/fundo_800_600.jpg')
 
+        # resolução de tela
         self.__screen = pygame.display.set_mode(_RESOLUCAO_TELA)
 
         # definir imagem de fundo e atualizar
@@ -58,7 +60,6 @@ class Arcade:
             os.mkdir(self.__dir_dataset)
 
         self._txt_dados_salvos = os.path.join(self.__dir_dataset, 'dados.txt')
-
         self.__iniciar_jogo()
 
     def __iniciar_jogo(self):
@@ -112,7 +113,6 @@ class Arcade:
         """
             Movimenta a base
         """
-        # self.__base.left = self.__nave.left
 
         # movimenta direita
         if self.__tecla[K_LEFT]:
@@ -148,13 +148,11 @@ class Arcade:
         elif self.__nave.top >= _NAVE_MAX_Y:
             self.__nave.top = _NAVE_MAX_Y
             self.__lst_speed[1] = -self.__lst_speed[1]
-        # print(self.__nave.top, self.__nave.left)
 
     def __colisoes(self):
         """
             Verifica a colisão com a base
         """
-
         if self.__nave.colliderect(self.__base):
             self.__pontos[1] += 1
             self.__lst_speed[1] = -self.__lst_speed[1]
@@ -171,19 +169,19 @@ class Arcade:
         #     self.__pontos = [0, 0]
         #     self._fase += 1
 
-    # salvar dados
+
     def __salvar_dados_jogo(self):
+        # salvar dados para machine learning
         with open(self._txt_dados_salvos, 'w+') as txt:
             for lst in self._dic.values():
-                txt.write(''.join(str(lst).replace('[', '').replace(']', '')) + '\n' )
+                txt.write(''.join(str(lst).replace('[', '').replace(']', '')) + '\n')
         del self._dic
 
     def run(self):
         """
             função principal onde incia o jogo
         """
-        left, rigth = 0, 0
-        top, botton = 0, 0
+        top, botton, left, rigth = 0, 0, 0, 0
         while True:
             # pega eventos para finalizar a tela
             for event in pygame.event.get():
@@ -224,7 +222,6 @@ class Arcade:
             pygame.display.flip()
 
             # dados para machine learning
-
             left = self.__nave.left if self.__nave.left > _RESOLUCAO_TELA[0] / 2 else left
             rigth = self.__nave.left if self.__nave.left < _RESOLUCAO_TELA[0] / 2 else rigth
 
