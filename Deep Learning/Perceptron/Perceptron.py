@@ -1,5 +1,5 @@
 """
-Formula:
+Equação:
 
 perceptron = x1 * w1 + x2 * w2 + ... + xn * wn
 
