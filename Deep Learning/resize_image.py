@@ -1,9 +1,15 @@
 from PIL import Image
-from glob import glob
+import os
 
 
 def resize_img(dir, tamanho=(32, 32)):
-    for img in glob(dir):
-        imagem = Image.open(img)
-        imagem = imagem.resize(tamanho, Image.ANTIALIAS)
-        imagem.save(img)
+    for path, subdirs, files in os.walk(dir):
+        for img in files:
+            if img[-3:] in ('jpg','png'):
+                imagem = Image.open(img)
+                imagem = imagem.resize(tamanho, Image.ANTIALIAS)
+                imagem.save(img)
+
+
+
+
