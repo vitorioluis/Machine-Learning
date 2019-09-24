@@ -1,6 +1,6 @@
 import cv2
 
-# carregaxml com parametros
+# carrega xml com parametros
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 img = cv2.imread('dataset/download.jpg')
