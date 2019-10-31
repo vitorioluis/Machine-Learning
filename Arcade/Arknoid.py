@@ -8,6 +8,7 @@ http://codentronix.com/2011/04/14/game-programming-with-python-and-pygame-making
 
 """
 import sys
+
 import pygame
 
 SCREEN_SIZE = 640, 480
