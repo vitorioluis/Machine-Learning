@@ -135,6 +135,9 @@ class Arcade:
         self.__nave.left += self.__lst_speed[0]
         self.__nave.top += self.__lst_speed[1]
 
+        # habilitar para mover sozinha a base para captar dados
+        self.__base.left = self.__nave.left
+
         if self.__nave.left <= 0:
             self.__nave.left = 0
             self.__lst_speed[0] = -self.__lst_speed[0]
@@ -169,7 +172,6 @@ class Arcade:
         #     self.__pontos = [0, 0]
         #     self._fase += 1
 
-
     def __salvar_dados_jogo(self):
         # salvar dados para machine learning
         with open(self._txt_dados_salvos, 'w+') as txt:
@@ -182,6 +184,7 @@ class Arcade:
             função principal onde incia o jogo
         """
         top, botton, left, rigth = 0, 0, 0, 0
+        cont = 0
         while True:
             # pega eventos para finalizar a tela
             for event in pygame.event.get():
@@ -196,7 +199,7 @@ class Arcade:
             self.__tecla = pygame.key.get_pressed()
 
             # o break interrompe o while finalizando o jogo ao teclar o esc
-            if self.__tecla[K_ESCAPE]:
+            if self.__tecla[K_ESCAPE] or cont > 200000:
                 self.__salvar_dados_jogo()
                 break
 
@@ -228,8 +231,9 @@ class Arcade:
             top = self.__nave.top if self.__nave.top < _RESOLUCAO_TELA[1] / 2 else top
             botton = self.__nave.top if self.__nave.top > _RESOLUCAO_TELA[1] / 2 else botton
 
-            if botton >= 500:
-                self._dic[len(self._dic) + 1] = [left, rigth, top, botton]
+            if self.__nave.top <= 450:
+                self._dic[cont] = [left, top, botton, rigth]
+                cont += 1
 
 
 if __name__ == "__main__":
